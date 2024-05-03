@@ -49,3 +49,5 @@ class Game:
 root = tk.Tk()
 game = Game(root)
 root.mainloop()
+
+print("Coline")
