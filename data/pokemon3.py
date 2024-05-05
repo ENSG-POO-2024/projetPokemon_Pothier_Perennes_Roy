@@ -98,4 +98,4 @@ if True:
     cara  = Individu(liste_pokemon[6],[charge,eau])
     
     pika = Individu(liste_pokemon[24],[charge])
-    l_pika = [[pika, 210,400]]
+    l_pika = [[pika, 210,520]]

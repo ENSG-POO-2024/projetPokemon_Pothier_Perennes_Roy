@@ -29,6 +29,12 @@ class Ui_MainWindow(object):
         self.label_2.setPixmap(QtGui.QPixmap("animation/down0.png"))
         self.label_2.setScaledContents(True)
         self.label_2.setObjectName("label_2")
+        self.label_p = QtWidgets.QLabel(self.centralwidget)
+        self.label_p.setGeometry(QtCore.QRect(205, 510, 25, 26))
+        self.label_p.setText("")
+        self.label_p.setPixmap(QtGui.QPixmap("pok_images/Pikachu.png"))
+        self.label_p.setScaledContents(True)
+        self.label_p.setObjectName("label_p")
         # self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         # self.pushButton.setGeometry(QtCore.QRect(10, 40, 93, 28))
         # self.pushButton.setObjectName("pushButton")
@@ -80,6 +86,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.label_p.hide()
         # self.pushButton.setText(_translate("MainWindow", "Inventary"))
         # self.lineEdit.setText(_translate("MainWindow", "Nom Joueur"))
         # self.pushButton_2.setText(_translate("MainWindow", "►"))
