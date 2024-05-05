@@ -83,6 +83,8 @@ class XXXXWindow (QMainWindow, Ui_MainWindow):
                     (start < self.sachaX < stop)):
                     self.sachaY = pos
                     break
+
+    # pour coline ca fonctionne mieux avec ça:
         # if self.sachaX < 0:
         #     self.sachaX = 0
         # if self.sachaX > 1071:
@@ -98,6 +100,8 @@ class XXXXWindow (QMainWindow, Ui_MainWindow):
             dy = pokemon[2] - self.sachaY
             if (0 < dx < 25) and (0 < dy < 19):
                 self.label_p.show()
+            else:
+                self.label_p.hide()
                 
     
     def update_position(self):
@@ -122,9 +126,15 @@ class XXXXWindow (QMainWindow, Ui_MainWindow):
         
         
 if __name__ == "__main__":
-    def run_app():
-        app = QApplication(sys.argv)
-        mainWin = XXXXWindow(l_pika)
-        mainWin.show()
-        app.exec_()
-    run_app()
+    app = QtWidgets.QApplication(sys.argv)
+    window = XXXXWindow(l_pika)
+    window.show()
+    window.label_2.setFocus()
+    sys.exit(app.exec_())
+    
+   # def run_app():
+      #  app = QApplication(sys.argv)
+      #  mainWin = XXXXWindow(l_pika)
+      #  mainWin.show()
+      #  app.exec_()
+#    run_app()
