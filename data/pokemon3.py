@@ -127,6 +127,31 @@ class Individu(Pokemon):
         damage = int(damage * CM)
         
         return damage
+    
+class Team():
+    def __init__(self,team):
+        self.list = team
+        self.main = 0
+        self.bag = [i for i in range(len(team))]
+        self.len = len(self.bag)
+    
+    def set_main(self,main):
+        self.main = main
+    
+    def __len__(self):
+        return self.len
+    
+    def add(self,pokemon):
+        self.list.append(pokemon)
+        if self.len < 6:
+            self.put_in(self.len)
+            self.len += 1
+    
+    def put_out(self,index_team):
+        self.bag.remove(index_team)
+    
+    def put_in(self,index_team):
+        self.bag.append(index_team)
             
 
 if True:
