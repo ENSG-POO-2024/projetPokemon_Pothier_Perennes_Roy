@@ -23,9 +23,9 @@ from PyQt5.Qt import Qt
     #     self.gros_sacha.hide()
     #     self.pokemon_sauvage.hide()
     #     self.label.hide()
-class XXXXWindow (QMainWindow, Ui_MainWindow):
+class GameWindow (QMainWindow, Ui_MainWindow):
     def __init__(self, wild, starting_pack, atk_lib, parent=None):
-        super(XXXXWindow, self).__init__(parent)
+        super(GameWindow, self).__init__(parent)
         self.setupUi(self)
         self.play.clicked.connect(self.load_map)
         self.load_screen_title()
@@ -184,7 +184,7 @@ class XXXXWindow (QMainWindow, Ui_MainWindow):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    window = XXXXWindow(wild, starting_pack, atk_lib)
+    window = GameWindow(wild, starting_pack, atk_lib)
     window.show()
     window.sacha.setFocus()
     sys.exit(app.exec_())
@@ -194,7 +194,7 @@ if __name__ == "__main__":
 #     window.label_2.setFocus()
 #     def run_app():
 #         app = QApplication(sys.argv)
-#         mainWin = XXXXWindow(l_pika)
+#         mainWin = GameWindow(l_pika)
 #         mainWin.show()
         
 #         app.exec_()
