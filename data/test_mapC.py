@@ -10,19 +10,12 @@ import sys
 from gui import Ui_MainWindow
 from pokemon3 import *
 from initialisation import *
+from fight_engine import fight
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.Qt import Qt
 
-    # def setupUi(self, MainWindow):
-    #     # Code précédent...
 
-    #     self.play.clicked.connect(self.remove_labels)
-
-    # def remove_labels(self):
-    #     self.gros_sacha.hide()
-    #     self.pokemon_sauvage.hide()
-    #     self.label.hide()
 class GameWindow (QMainWindow, Ui_MainWindow):
     def __init__(self, wild, starting_pack, atk_lib, parent=None):
         super(GameWindow, self).__init__(parent)
@@ -38,18 +31,22 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.sacha_moves = [0,0,0,0]
         self.name = "down0"
         
-        #self.up_limit = np.genfromtxt("up.txt", dtype = int, delimiter = ',')
+        self.up_limit    = np.genfromtxt("bounds/up.txt"   , dtype = int, delimiter = ',')
+        self.down_limit  = np.genfromtxt("bounds/down.txt" , dtype = int, delimiter = ',')
+        self.left_limit  = np.genfromtxt("bounds/left.txt" , dtype = int, delimiter = ',')
+        self.right_limit = np.genfromtxt("bounds/right.txt", dtype = int, delimiter = ',')
         
         self.wild = wild
         self.team = Team(starting_pack)
         self.atk_lib = atk_lib
     
     
-    def hide_em_all(self):
+    def cache_em_all(self):
         self.coeur1.hide()
         self.coeur2.hide()
         self.coeur3.hide()
         self.inventory.hide()
+        self.fond.hide()
         self.sacha.hide()
         self.fondcombat.hide()
         self.vs.hide()
@@ -67,7 +64,9 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         
     
     def load_screen_title(self):
-        self.hide_em_all()
+        self.cache_em_all()
+        
+        self.fond.show()
         self.gros_sacha.show()
         self.pokemon_sauvage.show()
         self.label.show()
@@ -78,7 +77,9 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.sacha.setFocus()
     
     def load_map(self):
-        self.hide_em_all()
+        self.cache_em_all()
+        
+        self.fond.show()
         self.coeur1.show()
         self.coeur2.show()
         self.coeur3.show()
@@ -87,7 +88,18 @@ class GameWindow (QMainWindow, Ui_MainWindow):
     
         self.sacha.setFocus()
         
+    
+    def load_fight(self):
+        self.cache_em_all()
         
+        self.fondcombat.show()
+        self.vs.show()
+        self.nompoke.show()
+        self.nompokesauvage.show()
+        self.progressBarpokesauvage.show()
+        self.progressBar_notre.show()
+        self.imagepokesauvage.show()
+        self.impagepoke.show()
     
     
     def keyPressEvent(self, event):
@@ -134,22 +146,45 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         
     
     def check_position(self):
-        # if self.sacha_dy < 0:
-        #     for limit in self.up_limit:
-        #         pos, start, stop = limit
-        #         #print(pos,start,stop,self.sachaX)
-        #         if ((self.sacha_dy <= (self.sachaY - pos) <= 0) and
-        #             (start < self.sachaX < stop)):
-        #             self.sachaY = pos
-        #             break
-        if self.sachaX < 0:
-            self.sachaX = 0
-        if self.sachaX > 1071:
-            self.sachaX = 1071
-        if self.sachaY < 0:
-            self.sachaY = 0
-        if self.sachaY > 696:
-            self.sachaY = 696
+        if self.sacha_dy < 0:
+            for limit in self.up_limit:
+                pos, start, stop = limit
+                if ((self.sacha_dy <= (self.sachaY - pos) <= 0) and
+                    (start <= self.sachaX <= stop)):
+                    self.sachaY = pos
+                    break
+        
+        if self.sacha_dy > 0:
+            for limit in self.down_limit:
+                pos, start, stop = limit
+                if ((self.sacha_dy >= (self.sachaY - pos) >= 0) and
+                    (start <= self.sachaX <= stop)):
+                    self.sachaY = pos
+                    break
+        
+        if self.sacha_dx < 0:
+            for limit in self.left_limit:
+                pos, start, stop = limit
+                if ((self.sacha_dx <= (self.sachaX - pos) <= 0) and
+                    (start <= self.sachaY <= stop)):
+                    self.sachaX = pos
+                    break
+        if self.sacha_dx > 0:
+            for limit in self.right_limit:
+                pos, start, stop = limit
+                if ((self.sacha_dx >= (self.sachaX - pos) >= 0) and
+                    (start <= self.sachaY <= stop)):
+                    self.sachaX = pos
+                    break
+        
+        # if self.sachaX < 0:
+        #     self.sachaX = 0
+        # if self.sachaX > 1071:
+        #     self.sachaX = 1071
+        # if self.sachaY < 0:
+        #     self.sachaY = 0
+        # if self.sachaY > 696:
+        #     self.sachaY = 696
     
     def check_pokemon(self):
         for pokemon in self.wild:
@@ -159,6 +194,11 @@ class GameWindow (QMainWindow, Ui_MainWindow):
                 self.pokemon_sauvage.setPixmap(QtGui.QPixmap("images/pokemon/blanc/" + str(pokemon[0].id_pok - 1) + ".png"))
                 self.pokemon_sauvage.setGeometry(QtCore.QRect(pokemon[1], pokemon[2], 25, 26))
                 self.pokemon_sauvage.show()
+                self.load_fight()
+                dead = fight(self,pokemon[0])
+                if dead:
+                    self.wild.remove(pokemon)
+                self.load_map()
 
     
     def update_position(self):
