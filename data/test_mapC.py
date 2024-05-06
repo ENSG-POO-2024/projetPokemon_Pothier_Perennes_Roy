@@ -9,6 +9,7 @@ import numpy as np
 import sys
 from gui import Ui_MainWindow
 from pokemon3 import *
+from initialisation import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.Qt import Qt
@@ -23,24 +24,12 @@ from PyQt5.Qt import Qt
     #     self.pokemon_sauvage.hide()
     #     self.label.hide()
 class XXXXWindow (QMainWindow, Ui_MainWindow):
-    def __init__(self, poke_list, parent=None):
+    def __init__(self, wild, starting_pack, atk_lib, parent=None):
         super(XXXXWindow, self).__init__(parent)
         self.setupUi(self)
-        self.play.clicked.connect(self.remove_labels)
-        self.coeur1.hide()
-        self.coeur2.hide()
-        self.coeur3.hide()
-        self.inventory.hide()
-        self.sacha.hide()
-        self.sacha.hide()
-        self.fondcombat.hide()
-        self.vs.hide()
-        self.nompoke.hide()
-        self.nompokesauvage.hide()
-        self.progressBarpokesauvage.hide()
-        self.progressBar_notre.hide()
-        self.imagepokesauvage.hide()
-        self.impagepoke.hide()
+        self.play.clicked.connect(self.load_map)
+        self.load_screen_title()
+        
         self.sachaX = 390
         self.sachaY = 580
         self.sacha_dx = 0
@@ -51,20 +40,53 @@ class XXXXWindow (QMainWindow, Ui_MainWindow):
         
         #self.up_limit = np.genfromtxt("up.txt", dtype = int, delimiter = ',')
         
-        self.poke_list = poke_list
-    def remove_labels(self):
+        self.wild = wild
+        self.team = Team(starting_pack)
+        self.atk_lib = atk_lib
+    
+    
+    def hide_em_all(self):
+        self.coeur1.hide()
+        self.coeur2.hide()
+        self.coeur3.hide()
+        self.inventory.hide()
+        self.sacha.hide()
+        self.fondcombat.hide()
+        self.vs.hide()
+        self.nompoke.hide()
+        self.nompokesauvage.hide()
+        self.progressBarpokesauvage.hide()
+        self.progressBar_notre.hide()
+        self.imagepokesauvage.hide()
+        self.impagepoke.hide()
         self.gros_sacha.hide()
         self.pokemon_sauvage.hide()
         self.label.hide()
         self.inventory2.hide()
         self.play.hide()
+        
+    
+    def load_screen_title(self):
+        self.hide_em_all()
+        self.gros_sacha.show()
+        self.pokemon_sauvage.show()
+        self.label.show()
+        self.inventory2.show()
+        self.play.show()
+        
+    
+        self.sacha.setFocus()
+    
+    def load_map(self):
+        self.hide_em_all()
         self.coeur1.show()
         self.coeur2.show()
         self.coeur3.show()
         self.inventory.show()
         self.sacha.show()
-
+    
         self.sacha.setFocus()
+        
         
     
     
@@ -130,15 +152,13 @@ class XXXXWindow (QMainWindow, Ui_MainWindow):
             self.sachaY = 696
     
     def check_pokemon(self):
-        for pokemon in self.poke_list:
+        for pokemon in self.wild:
             dx = pokemon[1] - self.sachaX
             dy = pokemon[2] - self.sachaY
-            if (0 < dx < 25) and (0 < dy < 19):
-                pokemon.show()
-              
-            # else:
-            #     self.label_p.hide()
-            #     self.psykokwak.hide()
+            if (-25 < dx < 25) and (-26 < dy < 19):
+                self.pokemon_sauvage.setPixmap(QtGui.QPixmap("images/pokemon/blanc/" + str(pokemon[0].id_pok - 1) + ".png"))
+                self.pokemon_sauvage.setGeometry(QtCore.QRect(pokemon[1], pokemon[2], 25, 26))
+                self.pokemon_sauvage.show()
 
     
     def update_position(self):
@@ -158,13 +178,13 @@ class XXXXWindow (QMainWindow, Ui_MainWindow):
         
         self.sacha_moves[self.sacha_dir] += 1
         
-        self.sacha.setPixmap(QtGui.QPixmap("animation/" + self.name + ".png"))
+        self.sacha.setPixmap(QtGui.QPixmap("images/animation/" + self.name + ".png"))
         self.sacha.setGeometry(QtCore.QRect(self.sachaX, self.sachaY, 19, 25))
         
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    window = XXXXWindow(l_pika)
+    window = XXXXWindow(wild, starting_pack, atk_lib)
     window.show()
     window.sacha.setFocus()
     sys.exit(app.exec_())
