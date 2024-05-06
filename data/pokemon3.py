@@ -50,7 +50,8 @@ class Pokemon:
 
 
 class Attack():
-    def __init__(self,power,special = False, typ = None):
+    def __init__(self,name,power, typ = None, special = False):
+        self.name = name
         self.power = power
         self.type = typ
         self.special = special
@@ -152,15 +153,21 @@ class Team():
     
     def put_in(self,index_team):
         self.bag.append(index_team)
+    
+    def all_ko(self):
+        for index_team in self.bag:
+            if self.list[index_team].hp != 0:
+                return False
+        return True
             
 
 if True:
 #if __name__ == "__main__":
     liste_pokemon = pd.read_csv('pokemon_first_gen.csv',sep = ',').to_numpy()
-    charge = Attack(40)
-    feuille = Attack(40,typ = 10)
-    feu = Attack(40, typ = 5)
-    eau = Attack(40, typ = 3)
+    charge = Attack("chatge",40)
+    feuille = Attack("feuille",40,typ = 10)
+    feu = Attack("feu", 40, typ = 5)
+    eau = Attack("eau",40, typ = 3)
     bulbi = Individu(liste_pokemon[0],[charge,feuille])
     sala  = Individu(liste_pokemon[3],[charge,feu])
     cara  = Individu(liste_pokemon[6],[charge,eau])
