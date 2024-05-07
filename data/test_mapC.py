@@ -25,6 +25,19 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.pushButton_inv.clicked.connect(self.load_screen_title)
         self.inventory.clicked.connect(self.load_inventary)
         self.inventory2.clicked.connect(self.load_inventary)
+        #self.bp1.clicked.connect(self.pushButton_2)
+        self.bp1.clicked.connect(self.show_vertical_layout)
+        self.bp2.clicked.connect(self.show_vertical_layout)
+        self.bp3.clicked.connect(self.show_vertical_layout)
+        self.bp4.clicked.connect(self.show_vertical_layout)
+        self.bp5.clicked.connect(self.show_vertical_layout)
+        self.bp6.clicked.connect(self.show_vertical_layout)
+        
+  
+        self.pushButton_3.clicked.connect(self.hide_widget_inventraire)
+        self.case = 1 
+        self.pushButton_2.clicked.connect(self.hide_vertical_layout)
+        self.pushButton_3.clicked.connect(self.hide_vertical_layout)
         
         self.load_screen_title()
         
@@ -44,6 +57,78 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.wild = wild
         self.team = Team(starting_pack)
         self.atk_lib = atk_lib
+        
+    def show_vertical_layout(self):
+        
+        #self.verticalLayout.show()
+        self.verticalLayoutWidget_inv.setVisible(True)
+        sender = self.sender()  # Récupérer le widget qui a émis le signal
+        if sender == self.bp1:
+            self.verticalLayoutWidget_inv.move(400, 200)
+            self.case = 1 
+              
+        elif sender == self.bp2:
+            self.verticalLayoutWidget_inv.move( 600, 200)
+            self.case = 2
+            
+        elif sender == self.bp3:
+            self.verticalLayoutWidget_inv.move( 800, 200 )
+            self.case = 3
+            
+        elif sender == self.bp4:
+            self.verticalLayoutWidget_inv.move(400, 400)
+            self.case = 4
+            
+        elif sender == self.bp5:
+            self.verticalLayoutWidget_inv.move(600,400)
+            self.case = 5
+            
+        elif sender == self.bp6:
+            self.verticalLayoutWidget_inv.move(800,400)
+            self.case = 6
+            
+    def hide_widget_inventraire(self):
+        if self.case==1:
+            self.image1.hide()
+            self.nom1.hide()
+            self.pv1.hide()
+            
+        if self.case==2:
+            self.image2.hide()
+            self.nom2.hide()
+            self.pv2.hide()
+            
+        if self.case==3:
+            self.image3.hide()
+            self.nom3.hide()
+            self.pv3.hide()
+            
+        if self.case==4:
+            self.image4.hide()
+            self.nom4.hide()
+            self.pv4.hide()
+            
+        if self.case==5:
+            self.image5.hide()
+            self.nom5.hide()
+            self.pv5.hide()
+            
+        if self.case==6:
+            self.image6.hide()
+            self.nom6.hide()
+            self.pv6.hide()
+            
+            
+            
+        #self.verticalLayoutWidget_inv.setVisible(True)
+          # Récupérer le widget qui a émis le signal
+
+            
+    
+    def hide_vertical_layout(self):
+        self.verticalLayoutWidget_inv.setVisible(False)
+
+        
     
     
     def cache_em_all(self):
@@ -84,7 +169,10 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         
     
     def load_screen_title(self):
+   
         self.cache_em_all()
+        
+        self.pushButton_inv.clicked.connect(self.load_screen_title)
         
         self.fond.show()
         self.gros_sacha.show()
@@ -97,7 +185,10 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.sacha.setFocus()
     
     def load_map(self):
+
         self.cache_em_all()
+        
+        self.pushButton_inv.clicked.connect(self.load_map)
         
         self.fond.show()
         self.coeur1.show()
@@ -110,7 +201,10 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         
     
     def load_fight(self):
+      
         self.cache_em_all()
+        
+        self.pushButton_inv.clicked.connect(self.load_fight)
         
         self.fondcombat.show()
         self.vs.show()
@@ -124,7 +218,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         
     def load_inventary_combobox(self):
         self.cache_em_all()
-        
+        self.pushButton_3.show()
         self.inventairemarron.show()
         self.fontgris.show()
         self.widget_1.show()
@@ -134,12 +228,12 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.widget_5.show()
         self.widget_6.show()
         self.comboBox.show()
-        self.verticalLayoutWidget_inv.show()
         self.pushButton_inv.show()
         
     def load_inventary(self):
+       
         self.cache_em_all()
-        
+        self.pushButton_3.hide()
         self.inventairemarron.show()
         self.fontgris.show()
         self.widget_1.show()
@@ -149,10 +243,10 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.widget_5.show()
         self.widget_6.show()
 
-        self.verticalLayoutWidget_inv.show()
         self.pushButton_inv.show()
         
-    
+    def inventaire(self):
+         self.bp1.clicked.connect(self.load_map)
     
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Up:
@@ -166,6 +260,10 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         
         if event.key() == Qt.Key_Right:
             self.set_dxdy(3)
+            
+        if event.key() == Qt.Key_Return   :
+            self.chek_maison()
+            return
         
         self.update_position()
     
@@ -266,6 +364,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.check_pokemon()
         self.check_fight()
         
+        
         name = {0:"up", 1:"down", 2:"left", 3:"right"}[self.sacha_dir]
         order = self.sacha_moves[self.sacha_dir]
         if (order % 6) == 4:
@@ -281,11 +380,13 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.sacha.setGeometry(QtCore.QRect(self.sachaX, self.sachaY, 19, 25))
         
         
-    def maison(self):
-        dx= 370-self.sachaX
+    def chek_maison(self):
+        dx= 390 -self.sachaX
         dy = 520- self.sachaY
-        if (-25 < dx < 25) and (-26 < dy < 19):
+        if (-20 < dx < 20) and (-26 < dy < 19):
             self.load_inventary_combobox()
+
+        
         
         
         
