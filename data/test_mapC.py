@@ -64,6 +64,16 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.gridLayoutWidget.hide()
         self.verticalLayoutWidget.hide()
         self.widget.hide()
+        self.inventairemarron.hide()
+        self.fontgris.hide()
+        self.widget_1.hide()
+        self.widget_2.hide()
+        self.widget_3.hide()
+        self.widget_4.hide()
+        self.widget_5.hide()
+        self.widget_6.hide()
+        self.comboBox.hide()
+        self.verticalLayoutWidget_inv.hide()
         
         
     
@@ -105,6 +115,23 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.imagepokesauvage.show()
         self.impagepoke.show()
         self.verticalLayoutWidget.show()
+        
+    def load_inventary(self):
+        self.cache_em_all()
+        
+        self.inventairemarron.show()
+        self.fontgris.show()
+        self.widget_1.show()
+        self.widget_2.show()
+        self.widget_3.show()
+        self.widget_4.show()
+        self.widget_5.show()
+        self.widget_6.show()
+        self.comboBox.show()
+        self.verticalLayoutWidget_inv.show()
+        
+        
+        
     
     
     def keyPressEvent(self, event):
