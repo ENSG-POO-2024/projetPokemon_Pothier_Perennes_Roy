@@ -61,6 +61,10 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.label.hide()
         self.inventory2.hide()
         self.play.hide()
+        self.gridLayoutWidget.hide()
+        self.verticalLayoutWidget.hide()
+        self.widget.hide()
+        
         
     
     def load_screen_title(self):
@@ -100,6 +104,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.progressBar_notre.show()
         self.imagepokesauvage.show()
         self.impagepoke.show()
+        self.verticalLayoutWidget.show()
     
     
     def keyPressEvent(self, event):
@@ -190,22 +195,28 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         for pokemon in self.wild:
             dx = pokemon[1] - self.sachaX
             dy = pokemon[2] - self.sachaY
-            if (-25 < dx < 25) and (-26 < dy < 19):
+            if (-35 < dx < 35) and (-36 < dy < 29):
                 self.pokemon_sauvage.setPixmap(QtGui.QPixmap("images/pokemon/blanc/" + str(pokemon[0].id_pok - 1) + ".png"))
                 self.pokemon_sauvage.setGeometry(QtCore.QRect(pokemon[1], pokemon[2], 25, 26))
                 self.pokemon_sauvage.show()
-                self.load_fight()
+    
+    
+    def check_fight(self):
+        for pokemon in self.wild:
+            dx = pokemon[1] - self.sachaX
+            dy = pokemon[2] - self.sachaY
+            if (-25 < dx < 25) and (-26 < dy < 19):
                 dead = fight(self,pokemon[0])
                 if dead:
                     self.wild.remove(pokemon)
                 self.load_map()
-
     
     def update_position(self):
         self.sachaX += self.sacha_dx
         self.sachaY += self.sacha_dy
         self.check_position()
         self.check_pokemon()
+        self.check_fight()
         
         name = {0:"up", 1:"down", 2:"left", 3:"right"}[self.sacha_dir]
         order = self.sacha_moves[self.sacha_dir]
@@ -228,14 +239,3 @@ if __name__ == "__main__":
     window.show()
     window.sacha.setFocus()
     sys.exit(app.exec_())
-        
-        
-# if __name__ == "__main__":
-#     window.label_2.setFocus()
-#     def run_app():
-#         app = QApplication(sys.argv)
-#         mainWin = GameWindow(l_pika)
-#         mainWin.show()
-        
-#         app.exec_()
-#     run_app()
