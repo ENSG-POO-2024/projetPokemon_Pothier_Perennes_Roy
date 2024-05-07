@@ -10,7 +10,7 @@ import sys
 from gui import Ui_MainWindow
 from pokemon3 import *
 from initialisation import *
-from fight_engine import fight
+#from fight_engine import fight
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.Qt import Qt
@@ -21,6 +21,11 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         super(GameWindow, self).__init__(parent)
         self.setupUi(self)
         self.play.clicked.connect(self.load_map)
+        self.inventory2.clicked.connect(self.load_inventary)
+        self.pushButton_inv.clicked.connect(self.load_screen_title)
+        self.inventory.clicked.connect(self.load_inventary)
+        self.inventory2.clicked.connect(self.load_inventary)
+        
         self.load_screen_title()
         
         self.sachaX = 390
@@ -74,6 +79,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.widget_6.hide()
         self.comboBox.hide()
         self.verticalLayoutWidget_inv.hide()
+        self.pushButton_inv.hide()
         
         
     
@@ -116,7 +122,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.impagepoke.show()
         self.verticalLayoutWidget.show()
         
-    def load_inventary(self):
+    def load_inventary_combobox(self):
         self.cache_em_all()
         
         self.inventairemarron.show()
@@ -129,8 +135,22 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.widget_6.show()
         self.comboBox.show()
         self.verticalLayoutWidget_inv.show()
+        self.pushButton_inv.show()
         
+    def load_inventary(self):
+        self.cache_em_all()
         
+        self.inventairemarron.show()
+        self.fontgris.show()
+        self.widget_1.show()
+        self.widget_2.show()
+        self.widget_3.show()
+        self.widget_4.show()
+        self.widget_5.show()
+        self.widget_6.show()
+
+        self.verticalLayoutWidget_inv.show()
+        self.pushButton_inv.show()
         
     
     
@@ -238,6 +258,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
                     self.wild.remove(pokemon)
                 self.load_map()
     
+    
     def update_position(self):
         self.sachaX += self.sacha_dx
         self.sachaY += self.sacha_dy
@@ -258,6 +279,15 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         
         self.sacha.setPixmap(QtGui.QPixmap("images/animation/" + self.name + ".png"))
         self.sacha.setGeometry(QtCore.QRect(self.sachaX, self.sachaY, 19, 25))
+        
+        
+    def maison(self):
+        dx= 370-self.sachaX
+        dy = 520- self.sachaY
+        if (-25 < dx < 25) and (-26 < dy < 19):
+            self.load_inventary_combobox()
+        
+        
         
 if __name__ == "__main__":
     import sys
