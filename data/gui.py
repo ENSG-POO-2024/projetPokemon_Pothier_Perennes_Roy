@@ -94,6 +94,11 @@ class Ui_MainWindow(object):
         self.sacha.setPixmap(QtGui.QPixmap("images/animation/down0.png"))
         self.sacha.setScaledContents(True)
         self.sacha.setObjectName("sacha")
+        
+        
+        
+        
+        
         #pour les combats
         self.fondcombat = QtWidgets.QLabel(self.centralwidget)
         self.fondcombat.setGeometry(QtCore.QRect(0, 0, 1071, 721))
@@ -223,6 +228,10 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.areyousure.setFont(font)
         self.areyousure.setObjectName("areyousure")
+        
+        
+        
+        #interface inventaire
         
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
