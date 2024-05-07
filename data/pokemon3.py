@@ -149,13 +149,14 @@ class Team():
         self.list.append(pokemon)
         if self.len < 6:
             self.put_in(self.len)
-            self.len += 1
     
     def put_out(self,index_team):
         self.bag.remove(index_team)
+        self.len -= 1
     
     def put_in(self,index_team):
         self.bag.append(index_team)
+        self.len += 1
     
     def all_ko(self):
         for index_team in self.bag:
