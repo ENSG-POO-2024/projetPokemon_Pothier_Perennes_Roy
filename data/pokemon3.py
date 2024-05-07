@@ -79,6 +79,9 @@ class Individu(Pokemon):
         if enemy.hp < 0:
             enemy.hp = 0
     
+    def heal(self):
+        self.hp = self.hp_max
+    
     @staticmethod
     def efficacity(type_attack,type_defense):
         if type_attack is None or type_defense is None:
