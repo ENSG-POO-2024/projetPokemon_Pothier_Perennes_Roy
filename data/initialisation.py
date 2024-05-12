@@ -42,5 +42,19 @@ for i in range(len(wild)):
     wild[i].append(x)
     wild[i].append(y)
 
-wild[0][1] = 390
-wild[0][2] = 580
+# wild[2][1] = 390
+# wild[2][2] = 580
+print(wild[0][1],wild[0][2])
+print(wild[1][1],wild[1][2])
+print(wild[2][1],wild[2][2])
+
+
+info0 = [0,0.1,[9,12,15,84],[0.3,0.3,0.3,0.1]]
+Zone0 = Zone(info0)
+infos = [0,500,50,50]
+zone0 = Sous_Zone(info0 + infos)
+info1 = [1,0.8,[26,36,133],[0.33,0.33,0.33]]
+Zone1 = Zone(info1)
+infos = [700,0,100,600]
+zone1 = Sous_Zone(info1 + infos)
+zones = [zone0,zone1]

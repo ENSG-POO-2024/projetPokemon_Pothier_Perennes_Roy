@@ -64,6 +64,7 @@ class Individu(Pokemon):
         self.hp = self.hp_max
         self.level = 1
         self.list_atk = attacks
+        self.range = None
         self.id = Individu.n
         Individu.n += 1
     
@@ -104,8 +105,8 @@ class Individu(Pokemon):
         CM *= Individu.efficacity(attack.type, target.type2)
         
         #critical
-        if rd.random() > 0.8:
-            CM *= 2
+        if rd.random() > 0.85:
+            CM *= 1.5
         
         #alea
         CM *= rd.uniform(0.85,1)
@@ -146,6 +147,7 @@ class Team():
         return self.len
     
     def add(self,pokemon):
+        pokemon.range = len(self.list)
         self.list.append(pokemon)
         if self.len < 6:
             self.put_in(self.len)
@@ -153,6 +155,8 @@ class Team():
     def put_out(self,index_team):
         self.bag.remove(index_team)
         self.len -= 1
+        if self.main == index_team:
+            self.set_main(self.bag[0])
     
     def put_in(self,index_team):
         self.bag.append(index_team)
@@ -163,12 +167,35 @@ class Team():
             if self.list[index_team].hp != 0:
                 return False
         return True
+
+class Zone():
+    def __init__(self,info):
+        self.id         = info[0]
+        self.p          = info[1]
+        self.population = info[2]
+        self.weights    = info[3]
+    
+    def id_pok(self):
+        return rd.choices(self.population,self.weights)[0]
+
+class Sous_Zone(Zone):
+    def __init__(self,info):
+        super().__init__(info[:4])
+        self.x      = info[4]
+        self.y      = info[5]
+        self.width  = info[6]
+        self.height = info[7]
+    
+    def __contains__(self,sacha):
+        return ((self.x <= sacha.x() <= self.x + self.width) and
+                (self.y <= sacha.y() <= self.y + self.height))
+        
             
 
 if True:
 #if __name__ == "__main__":
     liste_pokemon = pd.read_csv('pokemon_first_gen.csv',sep = ',').to_numpy()
-    charge = Attack("chatge",40)
+    charge = Attack("charge",40)
     feuille = Attack("feuille",40,typ = 10)
     feu = Attack("feu", 40, typ = 5)
     eau = Attack("eau",40, typ = 3)
