@@ -102,7 +102,7 @@ class Ui_MainWindow(object):
         
         self.maison = QtWidgets.QLabel(self.centralwidget)
         self.maison.setGeometry(QtCore.QRect(376, 593, 95, 95))
-        self.maison.setPixmap(QtGui.QPixmap("images/divers/maison_carre_95.png"))
+        self.maison.setPixmap(QtGui.QPixmap("images/divers/maison.png"))
         self.maison.setText("")
         self.maison.setObjectName("maison")
 
@@ -114,9 +114,6 @@ class Ui_MainWindow(object):
         self.sacha.setScaledContents(True)
         self.sacha.setObjectName("sacha")
         
-        
-        self.test = QtWidgets.QPushButton(self.centralwidget)
-        self.test.setGeometry(QtCore.QRect(0, 500, 50, 50))
         
         
         #pour les combats
@@ -603,7 +600,6 @@ class Ui_MainWindow(object):
         self.comboBox.setGeometry(QtCore.QRect(700, 180, 161, 22))
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
-        self.comboBox.addItem("")
         self.verticalLayoutWidget_inv = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget_inv.setGeometry(QtCore.QRect(370, 200, 160, 80))
         self.verticalLayoutWidget_inv.setObjectName("verticalLayoutWidget")
@@ -685,7 +681,6 @@ class Ui_MainWindow(object):
         self.pv6.setText(_translate("MainWindow", ""))
         self.retour.setText(_translate("MainWindow", "retour"))
         self.comboBox.setItemText(0, _translate("MainWindow", "my pokemons"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "carapuce"))
         self.send_to_fight.setText(_translate("MainWindow", "send to fight"))
         self.select_main_button.setText(_translate("MainWindow", "main pokemon"))
         self.see_the_attacks.setText(_translate("MainWindow", "see the attacks"))
