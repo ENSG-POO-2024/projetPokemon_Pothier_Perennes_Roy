@@ -10,40 +10,28 @@ from PyQt5 import QtGui
 def set_up_inventory(window):
     n = window.team.len
     window.widget_1.hide()
-    window.bp1.hide()
     window.widget_2.hide()
-    window.bp2.hide()
     window.widget_3.hide()
-    window.bp3.hide()
     window.widget_4.hide()
-    window.bp4.hide()
     window.widget_5.hide()
-    window.bp5.hide()
     window.widget_6.hide()
-    window.bp6.hide()
     if n > 0:
         window.widget_1.show()
-        window.bp1.show()
         put_in_inventory(window, window.team.list[window.team.bag[0]], 1)
         if n > 1:
             window.widget_2.show()
-            window.bp2.show()
             put_in_inventory(window, window.team.list[window.team.bag[1]], 2)
             if n > 2:
                 window.widget_3.show()
-                window.bp3.show()
                 put_in_inventory(window, window.team.list[window.team.bag[2]], 3)
                 if n > 3:
                     window.widget_4.show()
-                    window.bp4.show()
                     put_in_inventory(window, window.team.list[window.team.bag[3]], 4)
                     if n > 4:
                         window.widget_5.show()
-                        window.bp5.show()
                         put_in_inventory(window, window.team.list[window.team.bag[4]], 5)
                         if n > 5:
                             window.widget_6.show()
-                            window.bp6.show()
                             put_in_inventory(window, window.team.list[window.team.bag[5]], 6)
 
 def put_in_inventory(window,pokemon,inventory_index):

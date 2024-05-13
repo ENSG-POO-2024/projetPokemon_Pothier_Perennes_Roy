@@ -43,6 +43,8 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         
         self.escape.clicked.connect(self.escape_button)
         
+        self.comboBox.currentIndexChanged.connect(self.add_to_bag)
+        
         
         self.case = 1
         self.send_to_fight.clicked.connect(self.run_send_to_fight_button)
@@ -135,6 +137,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.team.put_out(self.team.bag[self.case - 1])
         
         self.verticalLayoutWidget_inv.hide()
+        self.load_inventory()
             
             
             
@@ -243,12 +246,6 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.load_inventory()
         self.comboBox.show()
         self.select_main_button.show()
-        self.couronne1.show()
-        self.couronne2.hide()
-        self.couronne3.hide()
-        self.couronne4.hide()
-        self.couronne5.hide()
-        self.couronne6.hide()
         self.see_the_attacks.show()
         self.select_remove_button.show()
         
@@ -260,12 +257,6 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.inventairemarron.show()
         self.fontgris.show()
         set_up_inventory(self)
-        self.couronne1.show()
-        self.couronne2.hide()
-        self.couronne3.hide()
-        self.couronne4.hide()
-        self.couronne5.hide()
-        self.couronne6.hide()
         self.retour.show()
         
         self.send_to_fight.hide()
@@ -401,7 +392,12 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         
         if event.key() == Qt.Key_Right:
             self.sacha_dx = 0
-        
+    
+    def add_to_bag(self,index):
+        index_team = index - 1
+        if not index_team in self.team.bag:
+            self.team.put_in(index_team)
+        self.load_inventory()
     
     # def set_dxdy(self,direction):
     #     self.sacha_dir = direction

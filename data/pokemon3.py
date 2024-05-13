@@ -8,6 +8,8 @@ import numpy  as np
 import pandas as pd
 import random as rd
 
+import PyQt5
+
 class Pokemon:
     types = np.array([[ 0.5 ,  1  ,  1  , 0.5 , 0.5 , 0.5 ,  2  ,  2  ,  1  ,  1  ,  1  ,  1  ,  1  ,  2  ,  1  ,  1  ,  1  ,  1  ],
                       [  2  ,  1  ,  1  ,  1  ,  1  ,  1  , 0.5 ,  2  , 0.5 ,  2  ,  1  , 0.5 , 0.5 ,  2  ,  1  ,  0  ,  2  , 0.5 ],
@@ -159,8 +161,9 @@ class Team():
             self.set_main(self.bag[0])
     
     def put_in(self,index_team):
-        self.bag.append(index_team)
-        self.len += 1
+        if self.len < 6:
+            self.bag.append(index_team)
+            self.len += 1
     
     def all_ko(self):
         for index_team in self.bag:
@@ -187,8 +190,12 @@ class Sous_Zone(Zone):
         self.height = info[7]
     
     def __contains__(self,sacha):
-        return ((self.x <= sacha.x() <= self.x + self.width) and
-                (self.y <= sacha.y() <= self.y + self.height))
+        if isinstance(sacha, PyQt5.QtWidgets.QLabel):
+            return ((self.x <= sacha.x() <= self.x + self.width) and
+                    (self.y <= sacha.y() <= self.y + self.height))
+        elif isinstance(sacha, (list,tuple)):
+            return ((self.x <= sacha[0] <= self.x + self.width) and
+                    (self.y <= sacha[1] <= self.y + self.height))
         
             
 
