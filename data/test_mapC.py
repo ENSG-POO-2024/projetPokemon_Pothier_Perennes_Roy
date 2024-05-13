@@ -73,6 +73,9 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         set_up_inventory(self)
         self.load_screen_title()
         
+        for individu in starting_pack:
+           self.comboBox.addItem(QtGui.QIcon("images/pokemon/blanc/" + str(individu.id_pok-1) + ".png"), individu.name + " lvl." + str(individu.level))
+        
     def show_vertical_layout(self):
         
         #self.verticalLayout.show()
@@ -256,6 +259,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
        
         self.cache_em_all()
         self.select_remove_button.hide()
+        self.comboBox.show()
         self.inventairemarron.show()
         self.fontgris.show()
         set_up_inventory(self)
