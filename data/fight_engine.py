@@ -8,7 +8,10 @@ from time import sleep
 import random as rd
 from pokemon3 import Individu
 from PyQt5 import QtGui, QtCore
-
+from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import QTimer
+import sys
 
 
 def set_up_fight(window):
@@ -72,11 +75,41 @@ def update_fight(window):
     window.progressBarpokesauvage.setStyleSheet("QProgressBar {\n""    border: 2px solid grey;\n""    border-radius: 5px;\n""    background-color: lightgrey;\n""}\n""\n""QProgressBar::chunk {\n""    background-color: " + color + ";\n""    width: 20px;\n""}")
 
 def animation_enemy(window):
+    
     window.imagepokesauvage.setGeometry(QtCore.QRect(643, 323, 331, 211))
-    window.imagepokesauvage.setPixmap(QtGui.QPixmap("images/pokemon/rouge/" + str(window.enemy.id_pok - 1) + ".png"))
-    sleep(1)
-    window.imagepokesauvage.setGeometry(QtCore.QRect(640, 320, 331, 211))
-    window.imagepokesauvage.setPixmap(QtGui.QPixmap("images/pokemon/blanc/" + str(window.enemy.id_pok - 1) + ".png"))
+    window.image1 = QPixmap("images/pokemon/blanc/" + str(window.enemy.id_pok - 1) + ".png")
+    window.imagepokesauvage.setGeometry(QtCore.QRect(643, 323, 331, 211))
+    window.image2 = QPixmap("images/pokemon/rouge/" + str(window.enemy.id_pok - 1) + ".png")
+
+    window.timer = QTimer(window)
+    window.timer.timeout.connect(window.toggle_image)
+    window.interval = 200  # Intervalle de temps entre chaque changement d'image en millisecondes
+    window.duration = 2000  # Durée totale du clignotement en millisecondes
+    window.total_time_elapsed = 0
+    window.is_image1 = True 
+    
+def start_blinking(self):
+    self.timer.start(self.interval)
+
+def toggle_image(self):
+        # Alterner entre les deux images
+    if self.is_image1:
+        self.label.setPixmap(self.image2)
+            
+    else:
+        self.label.setPixmap(self.image1)
+    self.is_image1 = not self.is_image1
+
+        # Vérifiez si la durée totale du clignotement est écoulée
+    self.total_time_elapsed += self.interval
+    if self.total_time_elapsed >= self.duration:
+        self.timer.stop()
+    
+    # window.imagepokesauvage.setGeometry(QtCore.QRect(643, 323, 331, 211))
+    # window.imagepokesauvage.setPixmap(QtGui.QPixmap("images/pokemon/rouge/" + str(window.enemy.id_pok - 1) + ".png"))
+    # sleep(1)
+    # window.imagepokesauvage.setGeometry(QtCore.QRect(640, 320, 331, 211))
+    # window.imagepokesauvage.setPixmap(QtGui.QPixmap("images/pokemon/blanc/" + str(window.enemy.id_pok - 1) + ".png"))
 
 def animation_notre_pokemon(window):
     sleep(1)
@@ -145,6 +178,8 @@ def run_attack(window,id_atk):
     window.attaque2.clicked.disconnect(window.attack_2_button)
     window.attaque3.clicked.disconnect(window.attack_3_button)
     window.attaque4.clicked.disconnect(window.attack_4_button)
+    
+
 
 def check_capture(window):
     if window.enemy.hp == 0:
