@@ -149,6 +149,7 @@ def run_attack(window,id_atk):
 def check_capture(window):
     if window.enemy.hp == 0:
         window.team.add(window.enemy)
+        window.comboBox.addItem(QtGui.QIcon("images/pokemon/blanc/" + str(window.enemy.id_pok - 1) + ".png"), window.enemy.name + " lvl." + str(window.enemy.level))
         if window.enemy_with_position is not None:
             window.wild.remove(window.enemy_with_position)
             window.enemy_with_position = None
