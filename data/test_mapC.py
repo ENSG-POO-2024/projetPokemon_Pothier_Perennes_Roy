@@ -243,6 +243,12 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.load_inventory()
         self.comboBox.show()
         self.select_main_button.show()
+        self.couronne1.show()
+        self.couronne2.hide()
+        self.couronne3.hide()
+        self.couronne4.hide()
+        self.couronne5.hide()
+        self.couronne6.hide()
         self.see_the_attacks.show()
         self.select_remove_button.show()
         
@@ -253,13 +259,21 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.inventairemarron.show()
         self.fontgris.show()
         set_up_inventory(self)
-
+        self.couronne1.show()
+        self.couronne2.hide()
+        self.couronne3.hide()
+        self.couronne4.hide()
+        self.couronne5.hide()
+        self.couronne6.hide()
         self.retour.show()
         
         self.send_to_fight.hide()
         self.select_main_button.hide()
         self.see_the_attacks.hide()
         self.select_remove_button.hide()
+    
+    def main_pokemon(self):
+        pass
         
     def inventory_clicked(self):
         self.load_inventory()
@@ -308,6 +322,50 @@ class GameWindow (QMainWindow, Ui_MainWindow):
     def run_select_main_button(self):
         self.team.set_main(self.team.bag[self.case - 1])
         self.verticalLayoutWidget_inv.hide()
+        if self.case ==1:
+            self.couronne1.show()
+            self.couronne2.hide()
+            self.couronne3.hide()
+            self.couronne4.hide()
+            self.couronne5.hide()
+            self.couronne6.hide()
+        if self.case == 2:
+            self.couronne1.hide()
+            self.couronne2.show()
+            self.couronne3.hide()
+            self.couronne4.hide()
+            self.couronne5.hide()
+            self.couronne6.hide()
+        if self.case == 3:
+            self.couronne1.hide()
+            self.couronne2.hide()
+            self.couronne3.show()
+            self.couronne4.hide()
+            self.couronne5.hide()
+            self.couronne6.hide()
+        if self.case == 4:
+            self.couronne1.hide()
+            self.couronne2.hide()
+            self.couronne3.hide()
+            self.couronne4.show()
+            self.couronne5.hide()
+            self.couronne6.hide()
+        if self.case == 5:
+            self.couronne1.hide()
+            self.couronne2.hide()
+            self.couronne3.hide()
+            self.couronne4.hide()
+            self.couronne5.show()
+            self.couronne6.hide()
+        if self.case == 6:
+            self.couronne1.hide()
+            self.couronne2.hide()
+            self.couronne3.hide()
+            self.couronne4.hide()
+            self.couronne5.hide()
+            self.couronne6.show()
+        
+        
     
     def run_see_the_attacks_button(self):
         self.attaque1.hide()
