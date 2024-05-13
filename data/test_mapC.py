@@ -7,10 +7,12 @@ Created on Fri May  3 17:00:24 2024
 
 import numpy  as np
 import random as rd
+from time import time
 import sys
 from gui import Ui_MainWindow
 from pokemon3 import *
 from initialisation import *
+import moving
 from fight_engine import *
 from inventory import *
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -59,6 +61,11 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.sacha_dir = 1
         self.sacha_moves = [0,0,0,0]
         self.name = "down0"
+        
+        self.speed = 4
+        self.time = time()
+        self.name = "down0"
+        self.moves = 0
         
         self.up_limit    = np.genfromtxt("bounds/up.txt"   , dtype = int, delimiter = ',')
         self.down_limit  = np.genfromtxt("bounds/down.txt" , dtype = int, delimiter = ',')
@@ -217,7 +224,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.coeur3.show()
         self.inventory.show()
         self.sacha.show()
-        if self.check_maison():
+        if moving.check_house(self):
             self.maison.show()
     
         self.sacha.setFocus()
@@ -322,47 +329,23 @@ class GameWindow (QMainWindow, Ui_MainWindow):
     def run_select_main_button(self):
         self.team.set_main(self.team.bag[self.case - 1])
         self.verticalLayoutWidget_inv.hide()
+        self.couronne1.hide()
+        self.couronne2.hide()
+        self.couronne3.hide()
+        self.couronne4.hide()
+        self.couronne5.hide()
+        self.couronne6.hide()
         if self.case ==1:
             self.couronne1.show()
-            self.couronne2.hide()
-            self.couronne3.hide()
-            self.couronne4.hide()
-            self.couronne5.hide()
-            self.couronne6.hide()
         if self.case == 2:
-            self.couronne1.hide()
             self.couronne2.show()
-            self.couronne3.hide()
-            self.couronne4.hide()
-            self.couronne5.hide()
-            self.couronne6.hide()
         if self.case == 3:
-            self.couronne1.hide()
-            self.couronne2.hide()
             self.couronne3.show()
-            self.couronne4.hide()
-            self.couronne5.hide()
-            self.couronne6.hide()
         if self.case == 4:
-            self.couronne1.hide()
-            self.couronne2.hide()
-            self.couronne3.hide()
             self.couronne4.show()
-            self.couronne5.hide()
-            self.couronne6.hide()
         if self.case == 5:
-            self.couronne1.hide()
-            self.couronne2.hide()
-            self.couronne3.hide()
-            self.couronne4.hide()
             self.couronne5.show()
-            self.couronne6.hide()
         if self.case == 6:
-            self.couronne1.hide()
-            self.couronne2.hide()
-            self.couronne3.hide()
-            self.couronne4.hide()
-            self.couronne5.hide()
             self.couronne6.show()
         
         
@@ -393,28 +376,23 @@ class GameWindow (QMainWindow, Ui_MainWindow):
     
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Up:
-            self.set_dxdy(0)
-        
-        if event.key() == Qt.Key_Down:
-            self.set_dxdy(1)
-        
-        if event.key() == Qt.Key_Left:
-            self.set_dxdy(2)
-        
-        if event.key() == Qt.Key_Right:
-            self.set_dxdy(3)
-            
-        if event.key() == Qt.Key_Return   :
-            if self.check_maison():
+            self.dir = 1
+        elif event.key() == Qt.Key_Down:
+            self.dir = 2
+        elif event.key() == Qt.Key_Left:
+            self.dir = 3
+        elif event.key() == Qt.Key_Right:
+            self.dir = 4
+        elif event.key() == Qt.Key_Return:
+            if moving.check_house(self):
                 for index_team in self.team.bag:
                     self.team.list[index_team].heal()
                 self.load_inventory_combobox()
+            self.dir = 0
+            self.moves = 0
+        else:
             return
-        
-        if event.key() == Qt.Key_T:
-            print(self.team.bag)
-        
-        self.update_position()
+        moving.update_position(self)
     
     def keyReleaseEvent(self, event):
         
@@ -431,125 +409,125 @@ class GameWindow (QMainWindow, Ui_MainWindow):
             self.sacha_dx = 0
         
     
-    def set_dxdy(self,direction):
-        self.sacha_dir = direction
-        dx = {0:self.sacha_dx, 1:self.sacha_dx, 2:-4, 3:4}[direction]
-        dy = {0:-4, 1:4, 2:self.sacha_dy, 3:self.sacha_dy}[direction]
+    # def set_dxdy(self,direction):
+    #     self.sacha_dir = direction
+    #     dx = {0:self.sacha_dx, 1:self.sacha_dx, 2:-4, 3:4}[direction]
+    #     dy = {0:-4, 1:4, 2:self.sacha_dy, 3:self.sacha_dy}[direction]
         
-        if dx != 0 and dy != 0:
-            self.sacha_dx = round(dx * 3/4)
-            self.sacha_dy = round(dy * 3/4)
-        else:
-            self.sacha_dx = dx
-            self.sacha_dy = dy
+    #     if dx != 0 and dy != 0:
+    #         self.sacha_dx = round(dx * 3/4)
+    #         self.sacha_dy = round(dy * 3/4)
+    #     else:
+    #         self.sacha_dx = dx
+    #         self.sacha_dy = dy
         
     
-    def check_position(self):
-        if self.sacha_dy < 0:
-            for limit in self.up_limit:
-                pos, start, stop = limit
-                if ((self.sacha_dy <= (self.sachaY - pos) <= 0) and
-                    (start <= self.sachaX <= stop)):
-                    self.sachaY = pos
-                    break
+    # def check_position(self):
+    #     if self.sacha_dy < 0:
+    #         for limit in self.up_limit:
+    #             pos, start, stop = limit
+    #             if ((self.sacha_dy <= (self.sachaY - pos) <= 0) and
+    #                 (start <= self.sachaX <= stop)):
+    #                 self.sachaY = pos
+    #                 break
         
-        if self.sacha_dy > 0:
-            for limit in self.down_limit:
-                pos, start, stop = limit
-                if ((self.sacha_dy >= (self.sachaY - pos) >= 0) and
-                    (start <= self.sachaX <= stop)):
-                    self.sachaY = pos
-                    break
+    #     if self.sacha_dy > 0:
+    #         for limit in self.down_limit:
+    #             pos, start, stop = limit
+    #             if ((self.sacha_dy >= (self.sachaY - pos) >= 0) and
+    #                 (start <= self.sachaX <= stop)):
+    #                 self.sachaY = pos
+    #                 break
         
-        if self.sacha_dx < 0:
-            for limit in self.left_limit:
-                pos, start, stop = limit
-                if ((self.sacha_dx <= (self.sachaX - pos) <= 0) and
-                    (start <= self.sachaY <= stop)):
-                    self.sachaX = pos
-                    break
-        if self.sacha_dx > 0:
-            for limit in self.right_limit:
-                pos, start, stop = limit
-                if ((self.sacha_dx >= (self.sachaX - pos) >= 0) and
-                    (start <= self.sachaY <= stop)):
-                    self.sachaX = pos
-                    break
+    #     if self.sacha_dx < 0:
+    #         for limit in self.left_limit:
+    #             pos, start, stop = limit
+    #             if ((self.sacha_dx <= (self.sachaX - pos) <= 0) and
+    #                 (start <= self.sachaY <= stop)):
+    #                 self.sachaX = pos
+    #                 break
+    #     if self.sacha_dx > 0:
+    #         for limit in self.right_limit:
+    #             pos, start, stop = limit
+    #             if ((self.sacha_dx >= (self.sachaX - pos) >= 0) and
+    #                 (start <= self.sachaY <= stop)):
+    #                 self.sachaX = pos
+    #                 break
         
-        # if self.sachaX < 0:
-        #     self.sachaX = 0
-        # if self.sachaX > 1071:
-        #     self.sachaX = 1071
-        # if self.sachaY < 0:
-        #     self.sachaY = 0
-        # if self.sachaY > 696:
-        #     self.sachaY = 696
+    #     # if self.sachaX < 0:
+    #     #     self.sachaX = 0
+    #     # if self.sachaX > 1071:
+    #     #     self.sachaX = 1071
+    #     # if self.sachaY < 0:
+    #     #     self.sachaY = 0
+    #     # if self.sachaY > 696:
+    #     #     self.sachaY = 696
     
-    def check_pokemon(self):
-        for pokemon in self.wild:
-            dx = pokemon[1] - self.sachaX
-            dy = pokemon[2] - self.sachaY
-            if (-35 < dx < 35) and (-36 < dy < 29):
-                self.pokemon_sauvage.setPixmap(QtGui.QPixmap("images/pokemon/blanc/" + str(pokemon[0].id_pok - 1) + ".png"))
-                self.pokemon_sauvage.setGeometry(QtCore.QRect(pokemon[1], pokemon[2], 25, 26))
-                self.pokemon_sauvage.show()
-    
-    
-    def check_fight(self):
-        for pokemon in self.wild:
-            dx = pokemon[1] - self.sachaX
-            dy = pokemon[2] - self.sachaY
-            if (-25 < dx < 25) and (-26 < dy < 19):
-                self.enemy = pokemon[0]
-                self.enemy_with_position = pokemon
-                self.notre_pokemon = self.team.list[self.team.main]
-                set_up_fight(self)
+    # def check_pokemon(self):
+    #     for pokemon in self.wild:
+    #         dx = pokemon[1] - self.sachaX
+    #         dy = pokemon[2] - self.sachaY
+    #         if (-35 < dx < 35) and (-36 < dy < 29):
+    #             self.pokemon_sauvage.setPixmap(QtGui.QPixmap("images/pokemon/blanc/" + str(pokemon[0].id_pok - 1) + ".png"))
+    #             self.pokemon_sauvage.setGeometry(QtCore.QRect(pokemon[1], pokemon[2], 25, 26))
+    #             self.pokemon_sauvage.show()
     
     
-    def update_position(self):
-        self.sachaX += self.sacha_dx
-        self.sachaY += self.sacha_dy
-        self.check_position()
-        self.check_pokemon()
-        self.check_fight()
-        self.check_zone()
-        if self.check_maison():
-            self.maison.show()
-        else:
-            self.maison.hide()
-        
-        
-        name = {0:"up", 1:"down", 2:"left", 3:"right"}[self.sacha_dir]
-        order = self.sacha_moves[self.sacha_dir]
-        if (order % 6) == 4:
-            self.name = name + "0"
-        elif (order % 12) == 1:
-            self.name = name + "1"
-        elif (order % 12) == 7:
-            self.name = name + "2"
-        
-        self.sacha_moves[self.sacha_dir] += 1
-        
-        self.sacha.setPixmap(QtGui.QPixmap("images/animation/" + self.name + ".png"))
-        self.sacha.setGeometry(QtCore.QRect(self.sachaX, self.sachaY, 19, 25))
-        
-        
-    def check_maison(self):
-        dx= 390 -self.sachaX
-        dy = 520- self.sachaY
-        if (-20 < dx < 20) and (-26 < dy < 19):
-            return True
-        return False
+    # def check_fight(self):
+    #     for pokemon in self.wild:
+    #         dx = pokemon[1] - self.sachaX
+    #         dy = pokemon[2] - self.sachaY
+    #         if (-25 < dx < 25) and (-26 < dy < 19):
+    #             self.enemy = pokemon[0]
+    #             self.enemy_with_position = pokemon
+    #             self.notre_pokemon = self.team.list[self.team.main]
+    #             set_up_fight(self)
     
-    def check_zone(self):
-        for zone in self.zones:
-            if self.sacha in zone:
-                if rd.random() < zone.p:
-                    enemy = Individu(liste_pokemon[zone.id_pok()],[self.atk_lib[0]])
-                    self.enemy = enemy
-                    self.notre_pokemon = self.team.list[self.team.main]
-                    set_up_fight(self)
-                break
+    
+    # def update_position(self):
+    #     self.sachaX += self.sacha_dx
+    #     self.sachaY += self.sacha_dy
+    #     self.check_position()
+    #     self.check_pokemon()
+    #     self.check_fight()
+    #     self.check_zone()
+    #     if self.check_maison():
+    #         self.maison.show()
+    #     else:
+    #         self.maison.hide()
+        
+        
+    #     name = {0:"up", 1:"down", 2:"left", 3:"right"}[self.sacha_dir]
+    #     order = self.sacha_moves[self.sacha_dir]
+    #     if (order % 6) == 4:
+    #         self.name = name + "0"
+    #     elif (order % 12) == 1:
+    #         self.name = name + "1"
+    #     elif (order % 12) == 7:
+    #         self.name = name + "2"
+        
+    #     self.sacha_moves[self.sacha_dir] += 1
+        
+    #     self.sacha.setPixmap(QtGui.QPixmap("images/animation/" + self.name + ".png"))
+    #     self.sacha.setGeometry(QtCore.QRect(self.sachaX, self.sachaY, 19, 25))
+        
+        
+    # def check_maison(self):
+    #     dx= 390 -self.sachaX
+    #     dy = 520- self.sachaY
+    #     if (-20 < dx < 20) and (-26 < dy < 19):
+    #         return True
+    #     return False
+    
+    # def check_zone(self):
+    #     for zone in self.zones:
+    #         if self.sacha in zone:
+    #             if rd.random() < zone.p:
+    #                 enemy = Individu(liste_pokemon[zone.id_pok()],[self.atk_lib[0]])
+    #                 self.enemy = enemy
+    #                 self.notre_pokemon = self.team.list[self.team.main]
+    #                 set_up_fight(self)
+    #             break
 
         
         
