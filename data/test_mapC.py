@@ -25,7 +25,6 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         super(GameWindow, self).__init__(parent)
         self.setupUi(self)
         self.play.clicked.connect(self.load_map)
-        self.inventory2.clicked.connect(self.load_inventory)
         self.retour.clicked.connect(self.load_screen_title)
         self.inventory.clicked.connect(self.inventory_clicked)
         self.inventory2.clicked.connect(self.inventory_clicked)
@@ -79,16 +78,16 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.atk_lib = atk_lib
         self.zones = zones
         
-        set_up_inventory(self)
+        self.run_select_main_button()
+        # set_up_inventory(self)
         self.load_screen_title()
         
         for individu in starting_pack:
            self.comboBox.addItem(QtGui.QIcon("images/pokemon/blanc/" + str(individu.id_pok-1) + ".png"), individu.name + " lvl." + str(individu.level))
         
     def show_vertical_layout(self):
-        
-        #self.verticalLayout.show()
-        self.verticalLayoutWidget_inv.setVisible(True)
+        self.verticalLayoutWidget_inv.show()
+        # self.verticalLayoutWidget_inv.setVisible(True)
         self.gridLayoutWidget.hide()
         sender = self.sender()  # Récupérer le widget qui a émis le signal
         if sender == self.bp1:
@@ -116,6 +115,10 @@ class GameWindow (QMainWindow, Ui_MainWindow):
             self.case = 6
             
     def run_select_remove_button(self):
+        if self.team.len < 2:
+            self.verticalLayoutWidget_inv.hide()
+            return
+        
         if self.case==1:
             self.widget_1.hide()
             
@@ -137,7 +140,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.team.put_out(self.team.bag[self.case - 1])
         
         self.verticalLayoutWidget_inv.hide()
-        self.load_inventory()
+        self.load_inventory_combobox()
             
             
             
@@ -193,7 +196,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
     
     
     def load_screen_title(self):
-   
+        
         self.cache_em_all()
         
         self.retour.clicked.connect(self.load_screen_title)
@@ -211,6 +214,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
     def load_map(self):
 
         self.cache_em_all()
+        self.phase = "attack"
         
         self.retour.clicked.connect(self.load_map)
         
@@ -229,6 +233,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
     def load_fight(self):
       
         self.cache_em_all()
+        self.phase = "fight"
         
         self.retour.clicked.connect(self.load_fight)
         
@@ -250,10 +255,8 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.select_remove_button.show()
         
     def load_inventory(self):
-       
+        
         self.cache_em_all()
-        self.select_remove_button.hide()
-        self.comboBox.show()
         self.inventairemarron.show()
         self.fontgris.show()
         set_up_inventory(self)
@@ -263,10 +266,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.select_main_button.hide()
         self.see_the_attacks.hide()
         self.select_remove_button.hide()
-    
-    def main_pokemon(self):
-        pass
-        
+     
     def inventory_clicked(self):
         self.load_inventory()
         self.select_main_button.show()
@@ -377,27 +377,28 @@ class GameWindow (QMainWindow, Ui_MainWindow):
             self.moves = 0
         else:
             return
-        moving.update_position(self)
+        if self.phase == "attack":
+            moving.update_position(self)
     
-    def keyReleaseEvent(self, event):
-        
-        if event.key() == Qt.Key_Up:
-            self.sacha_dy = 0
-        
-        if event.key() == Qt.Key_Down:
-            self.sacha_dy = 0
-        
-        if event.key() == Qt.Key_Left:
-            self.sacha_dx = 0
-        
-        if event.key() == Qt.Key_Right:
-            self.sacha_dx = 0
-    
-    def add_to_bag(self,index):
-        index_team = index - 1
+    def add_to_bag(self,index_combo):
+        index_team = index_combo - 1
         if not index_team in self.team.bag:
             self.team.put_in(index_team)
-        self.load_inventory()
+        self.load_inventory_combobox()
+    
+    # def keyReleaseEvent(self, event):
+        
+    #     if event.key() == Qt.Key_Up:
+    #         self.sacha_dy = 0
+        
+    #     if event.key() == Qt.Key_Down:
+    #         self.sacha_dy = 0
+        
+    #     if event.key() == Qt.Key_Left:
+    #         self.sacha_dx = 0
+        
+    #     if event.key() == Qt.Key_Right:
+    #         self.sacha_dx = 0
     
     # def set_dxdy(self,direction):
     #     self.sacha_dir = direction
