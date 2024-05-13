@@ -62,7 +62,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.sacha_moves = [0,0,0,0]
         self.name = "down0"
         
-        self.speed = 4
+        self.speed = 12
         self.time = time()
         self.name = "down0"
         self.moves = 0
@@ -118,29 +118,19 @@ class GameWindow (QMainWindow, Ui_MainWindow):
             self.widget_1.hide()
             
         if self.case==2:
-            self.image2.hide()
-            self.nom2.hide()
-            self.pv2.hide()
+            self.widget_2.hide()
             
         if self.case==3:
-            self.image3.hide()
-            self.nom3.hide()
-            self.pv3.hide()
+            self.widget_3.hide()
             
         if self.case==4:
-            self.image4.hide()
-            self.nom4.hide()
-            self.pv4.hide()
+            self.widget_4.hide()
             
         if self.case==5:
-            self.image5.hide()
-            self.nom5.hide()
-            self.pv5.hide()
+            self.widget_5.hide()
             
         if self.case==6:
-            self.image6.hide()
-            self.nom6.hide()
-            self.pv6.hide()
+            self.widget_6.hide()
         
         self.team.put_out(self.team.bag[self.case - 1])
         

@@ -23,7 +23,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.centralwidget.setGeometry(0,0,1071, 717)
         self.fond = QtWidgets.QLabel(self.centralwidget)
-        self.fond.setGeometry(QtCore.QRect(-260,-530,1920*1.5,1280*1.5))
+        self.fond.setGeometry(QtCore.QRect(-180,-860,1920*1.5,1280*1.5))
         self.fond.setText("")
         self.fond.setPixmap(QtGui.QPixmap("images/divers/big_map.png"))
         self.fond.setScaledContents(True)
@@ -101,19 +101,22 @@ class Ui_MainWindow(object):
         self.inventory2.setObjectName("inventory2")
         
         self.maison = QtWidgets.QLabel(self.centralwidget)
-        self.maison.setGeometry(QtCore.QRect(376, 493, 53, 54))
-        self.maison.setPixmap(QtGui.QPixmap("images/divers/maison.png"))
+        self.maison.setGeometry(QtCore.QRect(376, 593, 95, 95))
+        self.maison.setPixmap(QtGui.QPixmap("images/divers/maison_carre_95.png"))
         self.maison.setText("")
         self.maison.setObjectName("maison")
 
         
         self.sacha = QtWidgets.QLabel(self.centralwidget)
-        self.sacha.setGeometry(QtCore.QRect(390, 580, 19*1.5, 25*1.5))
+        self.sacha.setGeometry(QtCore.QRect(self.width() / 2, self.height() / 2, 19*1.5, 25*1.5))
         self.sacha.setText("")
         self.sacha.setPixmap(QtGui.QPixmap("images/animation/down0.png"))
         self.sacha.setScaledContents(True)
         self.sacha.setObjectName("sacha")
         
+        
+        self.test = QtWidgets.QPushButton(self.centralwidget)
+        self.test.setGeometry(QtCore.QRect(0, 500, 50, 50))
         
         
         #pour les combats

@@ -11,6 +11,9 @@ from fight_engine import set_up_fight
 from initialisation import liste_pokemon
 from PyQt5 import QtCore, QtGui
 
+house_x = 673
+house_y = 1057
+
 
 def check_position(window):
     if window.dir == 1:
@@ -28,7 +31,7 @@ def check_position(window):
             if window.sacha.y() > window.height() - window.sacha.height():
                 window.sacha.move(window.sacha.x(), window.height() - window.sacha.height())
             window.fond.move(window.fond.x(), window.fond.y() + window.speed)
-        elif window.sacha.y() < window.height() / 2:
+        elif window.sacha.y() + window.sacha.height() < window.height() / 2:
             window.sacha.move(window.sacha.x(), window.sacha.y() + window.speed)
             window.fond.move(window.fond.x(), window.fond.y() + window.speed)
     if window.dir == 3:
@@ -46,7 +49,7 @@ def check_position(window):
             if window.sacha.x() > window.width() - window.sacha.width():
                 window.sacha.move(window.width() - window.sacha.width(), window.sacha.y())
             window.fond.move(window.fond.x() + window.speed, window.fond.y())
-        elif window.sacha.x() < window.width() / 2:
+        elif window.sacha.x() + window.sacha.width() < window.width() / 2:
             window.sacha.move(window.sacha.x() + window.speed, window.sacha.y())
             window.fond.move(window.fond.x() + window.speed, window.fond.y())
 
@@ -74,7 +77,7 @@ def check_fight(window,pokemon):
 
 def check_zone(window):
     for zone in window.zones:
-        if window.sacha in zone:
+        if (window.sacha.x() - window.fond.x(), window.sacha.y() - window.fond.y()) in zone:
             if rd.random() < zone.p:
                 enemy = Individu(liste_pokemon[zone.id_pok()],[window.atk_lib[0]])
                 window.enemy = enemy
@@ -83,10 +86,11 @@ def check_zone(window):
             break
 
 def check_house(window):
-    if (window.sacha.x() < window.maison.x() + window.maison.width()  and
-        window.sacha.x() + window.sacha.width() > window.maison.x()   and
-        window.sacha.y() < window.maison.y() + window.maison.height() and
-        window.sacha.y() + window.sacha.height() > window.maison.y()):
+    if (window.sacha.x() - window.fond.x() < house_x + window.maison.width()  and
+        window.sacha.x() - window.fond.x() + window.sacha.width() > house_x   and
+        window.sacha.y() - window.fond.y() < house_y + window.maison.height() and
+        window.sacha.y() - window.fond.y() + window.sacha.height() > + house_y):
+        # window.maison.move(window.fond.x() + house_x, window.fond.y() + house_y)
         window.maison.show()
         return True
     else:
@@ -96,26 +100,12 @@ def check_house(window):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 def update_position(window):
     check_position(window)
     # p1, p2 = check_pokemon(window)
     # if p1:
     #     check_fight(window, p2)
-    # check_zone(window)
-    # check_house(window)
+    check_zone(window)
     
     
     
@@ -140,5 +130,9 @@ def update_position(window):
 
     window.sacha.setPixmap(QtGui.QPixmap("images/animation/" + window.name + ".png"))
     window.fond.move(window.fond.x() + dx, window.fond.y() + dy)
+    window.maison.move(window.fond.x() + house_x, window.fond.y() + house_y)
+    
+    
+    check_house(window)
     
     window.time = time()
