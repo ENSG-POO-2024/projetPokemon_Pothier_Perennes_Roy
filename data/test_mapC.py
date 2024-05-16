@@ -25,7 +25,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         super(GameWindow, self).__init__(parent)
         self.setupUi(self)
         self.play.clicked.connect(self.load_map)
-        self.retour.clicked.connect(self.load_screen_title)
+        self.retour.clicked.connect(self.return_button)
         self.inventory.clicked.connect(self.inventory_clicked)
         self.inventory2.clicked.connect(self.inventory_clicked)
         #self.bp1.clicked.connect(self.select_main_button)
@@ -51,12 +51,15 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.see_the_attacks.clicked.connect(self.run_see_the_attacks_button)
         self.select_remove_button.clicked.connect(self.run_select_remove_button)
         
+        self.buttonBox.button(self.buttonBox.Yes).clicked.connect(self.run_yes)
+        self.buttonBox.button(self.buttonBox.No).clicked.connect(self.run_no)
+        
         self.enemy_with_position = None
         
         
         
-        self.sachaX = 390
-        self.sachaY = 580
+        self.sachaX = 535
+        self.sachaY = 358
         self.sacha_dx = 0
         self.sacha_dy = 0
         self.sacha_dir = 1
@@ -68,10 +71,10 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.name = "down0"
         self.moves = 0
         
-        self.up_limit    = np.genfromtxt("bounds/up.txt"   , dtype = int, delimiter = ',')
-        self.down_limit  = np.genfromtxt("bounds/down.txt" , dtype = int, delimiter = ',')
-        self.left_limit  = np.genfromtxt("bounds/left.txt" , dtype = int, delimiter = ',')
-        self.right_limit = np.genfromtxt("bounds/right.txt", dtype = int, delimiter = ',')
+        # self.up_limit    = np.genfromtxt("bounds/up.txt"   , dtype = int, delimiter = ',')
+        # self.down_limit  = np.genfromtxt("bounds/down.txt" , dtype = int, delimiter = ',')
+        # self.left_limit  = np.genfromtxt("bounds/left.txt" , dtype = int, delimiter = ',')
+        # self.right_limit = np.genfromtxt("bounds/right.txt", dtype = int, delimiter = ',')
         
         self.wild = wild
         self.team = Team(starting_pack)
@@ -84,6 +87,8 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         
         for individu in starting_pack:
            self.comboBox.addItem(QtGui.QIcon("images/pokemon/blanc/" + str(individu.id_pok-1) + ".png"), individu.name + " lvl." + str(individu.level))
+        
+        self.lives = 3
         
     def show_vertical_layout(self):
         self.verticalLayoutWidget_inv.show()
@@ -137,6 +142,8 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         if self.case==6:
             self.widget_6.hide()
         
+        if self.team.main == self.team.bag[self.case - 1]:
+            self.team.set_main(self.team.bag[0])
         self.team.put_out(self.team.bag[self.case - 1])
         
         self.verticalLayoutWidget_inv.hide()
@@ -176,9 +183,12 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.label.hide()
         self.inventory2.hide()
         self.play.hide()
+        self.level_notre_poke.hide()
+        self.level_poke_sauvage.hide()
         self.gridLayoutWidget.hide()
         self.verticalLayoutWidget.hide()
         self.widget.hide()
+        self.infos_combat.hide()
         self.inventairemarron.hide()
         self.fontgris.hide()
         self.widget_1.hide()
@@ -198,8 +208,9 @@ class GameWindow (QMainWindow, Ui_MainWindow):
     def load_screen_title(self):
         
         self.cache_em_all()
+        self.phase = "screen title"
         
-        self.retour.clicked.connect(self.load_screen_title)
+        #self.retour.clicked.connect(self.load_screen_title)
         
         self.fond.show()
         self.gros_sacha.show()
@@ -212,11 +223,10 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.sacha.setFocus()
     
     def load_map(self):
-
         self.cache_em_all()
-        self.phase = "attack"
+        self.phase = "map"
         
-        self.retour.clicked.connect(self.load_map)
+        #self.retour.clicked.connect(self.load_map)
         
         self.fond.show()
         self.coeur1.show()
@@ -235,7 +245,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.cache_em_all()
         self.phase = "fight"
         
-        self.retour.clicked.connect(self.load_fight)
+        #self.retour.clicked.connect(self.load_fight)
         
         self.fondcombat.show()
         self.vs.show()
@@ -245,10 +255,23 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.progressBar_notre.show()
         self.imagepokesauvage.show()
         self.impagepoke.show()
+        self.level_notre_poke.show()
+        self.level_poke_sauvage.show()
         self.verticalLayoutWidget.show()
+    
+    def return_button(self):
+        if self.phase == "screen title":
+            self.load_screen_title()
+        elif self.phase == "map":
+            self.load_map()
+        else:
+            self.load_fight()
         
     def load_inventory_combobox(self):
         self.load_inventory()
+        for index_team in self.team.bag:
+            pokemon = self.team.list[index_team]
+            self.comboBox.setItemText(index_team + 1, pokemon.name + " lvl." + str(pokemon.level))
         self.comboBox.show()
         self.select_main_button.show()
         self.see_the_attacks.show()
@@ -257,6 +280,12 @@ class GameWindow (QMainWindow, Ui_MainWindow):
     def load_inventory(self):
         
         self.cache_em_all()
+        self.couronne1.hide()
+        self.couronne2.hide()
+        self.couronne3.hide()
+        self.couronne4.hide()
+        self.couronne5.hide()
+        self.couronne6.hide()
         self.inventairemarron.show()
         self.fontgris.show()
         set_up_inventory(self)
@@ -309,7 +338,8 @@ class GameWindow (QMainWindow, Ui_MainWindow):
             self.load_fight()
     
     def escape_button(self):
-        run_escape(self)
+        window.areyousure.setText("Are you sure\nyou want to escape ?")
+        window.widget.show()
     
     def run_select_main_button(self):
         self.team.set_main(self.team.bag[self.case - 1])
@@ -341,23 +371,43 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.attaque3.hide()
         self.attaque4.hide()
         
-        attacks = self.team.list[self.team.bag[self.case - 1]].list_atk
+        colors = {0:"#60A2B9",1:"#FF8100",2:"#4F60E2",3:"#2481EF",4:"#FAC100",5:"#E72324",6:"#EF70EF", 
+                       7:"#3DD9FF",8:"#92A212",9:"#A0A2A0",10:"#3DA224",11:"#923FCC",12:"#EF3F7A",
+                       13:"#B0AA82",14:"#92501B",15:"#703F70",16:"#4F3F3D",17:"#82BAEF"}
+        
+        if window.phase != "fight":
+            pokemon = self.team.list[self.team.bag[self.case - 1]]
+        else:
+            pokemon = self.notre_pokemon
+        
+        attacks = pokemon.list_atk
         n = len(attacks)
         if n > 0:
             self.attaque1.setText(attacks[0].name)
+            self.attaque1.setStyleSheet("QPushButton {background-color: " + colors[attacks[0].type] + "}")
             self.attaque1.show()
             if n > 1:
                 self.attaque2.setText(attacks[1].name)
+                self.attaque2.setStyleSheet("QPushButton {background-color: " + colors[attacks[1].type] + "}")
                 self.attaque2.show()
                 if n > 2:
                     self.attaque3.setText(attacks[2].name)
+                    self.attaque3.setStyleSheet("QPushButton {background-color: " + colors[attacks[2].type] + "}")
                     self.attaque3.show()
                     if n > 3:
                         self.attaque4.setText(attacks[3].name)
+                        self.attaque4.setStyleSheet("QPushButton {background-color: " + colors[attacks[3].type] + "}")
                         self.attaque4.show()
         
-        self.gridLayoutWidget.show()
-        self.verticalLayoutWidget_inv.hide()
+        if window.phase != "fight":
+            self.gridLayoutWidget.show()
+            self.verticalLayoutWidget_inv.hide()
+    
+    def run_yes(self):
+        yes_button(self)
+    
+    def run_no(self):
+        no_button(self)
     
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Up:
@@ -375,14 +425,100 @@ class GameWindow (QMainWindow, Ui_MainWindow):
                 self.load_inventory_combobox()
             self.dir = 0
             self.moves = 0
+        elif event.key() == Qt.Key_P:
+            self.speed = 24
+            self.dir = 0
+            self.moves = 0
+        elif event.key() == Qt.Key_M:
+            self.speed = 1
+            self.dir = 0
+            self.moves = 0
+        elif event.key() == Qt.Key_E:
+            self.coinx = self.sacha.x() - self.fond.x()
+            self.coiny = self.sacha.y() - self.fond.y()
+            print(self.coinx, self.coiny)
+            self.dir = 0
+            self.moves = 0
+        elif event.key() == Qt.Key_F:
+            x2 = self.sacha.x() + self.sacha.width()  - 1 - self.fond.x() - self.coinx
+            y2 = self.sacha.y() + self.sacha.height() - 1 - self.fond.y() - self.coiny
+            
+            zonage = r"zones.txt"
+            with open(zonage, "a") as f:
+                f.write(f"infos = [{self.coinx},{self.coiny},{x2},{y2}]\n")
+                f.write(f"zones.append(Sous_Zone(info{self.num_zone} + infos))\n")
+            print(f"infos = [{self.coinx},{self.coiny},{x2},{y2}]")
+            print(f"zones.append(Sous_Zone(info{self.num_zone} + infos))")
+            print("")
+            self.dir = 0
+            self.moves = 0
+        elif event.key() == Qt.Key_C:
+            zonage = r"zones.txt"
+            with open(zonage, "a") as f:
+                f.write("\n")
+            
+            try:
+                self.num_zone += 1
+            except:
+                self.num_zone = 0
+            print(f"Vous êtes dans la zone {self.num_zone}")
+            self.dir = 0
+            self.moves = 0
+        elif event.key() == Qt.Key_U:
+            print("Direction des barrières : up")
+            self.file = 1
+            self.dir = 0
+            self.moves = 0
+        elif event.key() == Qt.Key_D:
+            print("Direction des barrières : down")
+            self.file = 2
+            self.dir = 0
+            self.moves = 0
+        elif event.key() == Qt.Key_L:
+            print("Direction des barrières : left")
+            self.file = 3
+            self.dir = 0
+            self.moves = 0
+        elif event.key() == Qt.Key_R:
+            print("Direction des barrières : right")
+            self.file = 4
+            self.dir = 0
+            self.moves = 0
+        elif event.key() == Qt.Key_W:
+            self.startx = self.sacha.x() - self.fond.x()
+            self.starty = self.sacha.y() - self.fond.y()
+            self.dir = 0
+            self.moves = 0
+        elif event.key() == Qt.Key_X:
+            stopx = self.sacha.x() + self.sacha.width()  - 1 - self.fond.x()
+            stopy = self.sacha.y() + self.sacha.height() - 1 - self.fond.y()
+            if self.file == 1:
+                limit = r"bounds/up.txt"
+                with open(limit, "a") as f:
+                    f.write(f"{self.starty - 1},{self.startx},{stopx}\n")
+            elif self.file == 2:
+                limit = r"bounds/down.txt"
+                with open(limit, "a") as f:
+                    f.write(f"{self.starty + self.sacha.height()},{self.startx},{stopx}\n")
+            elif self.file == 3:
+                limit = r"bounds/left.txt"
+                with open(limit, "a") as f:
+                    f.write(f"{self.startx - 1},{self.starty},{stopy}\n")
+            elif self.file == 4:
+                limit = r"bounds/right.txt"
+                with open(limit, "a") as f:
+                    f.write(f"{self.startx + self.sacha.width()},{self.starty},{stopy}\n")
+            
+            self.dir = 0
+            self.moves = 0
         else:
             return
-        if self.phase == "attack":
+        if self.phase == "map" and self.dir:
             moving.update_position(self)
     
     def add_to_bag(self,index_combo):
         index_team = index_combo - 1
-        if not index_team in self.team.bag:
+        if index_team != -1 and (not index_team in self.team.bag):
             self.team.put_in(index_team)
         self.load_inventory_combobox()
     
