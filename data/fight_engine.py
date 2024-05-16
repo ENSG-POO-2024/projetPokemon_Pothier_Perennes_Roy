@@ -23,7 +23,7 @@ def set_up_fight(window):
     window.progressBarpokesauvage.setProperty("value", window.enemy.hp)
     window.progressBarpokesauvage.setStyleSheet("QProgressBar {\n""    border: 2px solid grey;\n""    border-radius: 5px;\n""    background-color: lightgrey;\n""}\n""\n""QProgressBar::chunk {\n""    background-color: green;\n""    width: 20px;\n""}")
     window.imagepokesauvage.setPixmap(QtGui.QPixmap("images/pokemon/blanc/" + str(window.enemy.id_pok - 1) + ".png"))
-    window.imagepokesauvage.setScaledContents(False)
+    window.imagepokesauvage.setScaledContents(True)
     window.level_poke_sauvage.setText("lvl. " + str(window.enemy.level))
     window.load_fight()
 
@@ -39,7 +39,7 @@ def upload_pokemon(window,index_team):
     window.progressBar_notre.setProperty("value", pokemon.hp)
     window.progressBar_notre.setStyleSheet("QProgressBar {\n""    border: 2px solid grey;\n""    border-radius: 5px;\n""    background-color: lightgrey;\n""}\n""\n""QProgressBar::chunk {\n""    background-color: " + color + ";\n""    width: 20px;\n""}")
     window.impagepoke.setPixmap(QtGui.QPixmap("images/pokemon/blanc/miroir/" + str(pokemon.id_pok - 1) + ".png"))
-    window.impagepoke.setScaledContents(False)
+    window.impagepoke.setScaledContents(True)
     window.level_notre_poke.setText("lvl. " + str(pokemon.level))
     window.run_see_the_attacks_button()
     
@@ -105,12 +105,11 @@ def animation_enemy(window, damage, critical, efficacity, attack):
         display_in_label(window, text)
         QtTest.QTest.qWait(1000)
     
-    text = {0:"It has no effect...",0.25:"It's not very effective...",0.5:"It's not very effective...",
+    text = {0:"It doesn't affect " + window.enemy.name + "...",0.25:"It's not very effective...",0.5:"It's not very effective...",
             1:False, 2:"It's super effective!", 4:"It's super effective!"}[efficacity]
     if text:
         display_in_label(window, text)
         QtTest.QTest.qWait(1000)
-    window.infos_combat.hide()
     
     for i in range(damage):
         QtTest.QTest.qWait(200)
@@ -124,7 +123,12 @@ def animation_enemy(window, damage, critical, efficacity, attack):
         window.imagepokesauvage.setPixmap(QtGui.QPixmap("images/pokemon/" + category + str(window.enemy.id_pok - 1) + ".png"))
     window.imagepokesauvage.setGeometry(QtCore.QRect(640, 320, 331, 211))
     window.imagepokesauvage.setPixmap(QtGui.QPixmap("images/pokemon/blanc/" + str(window.enemy.id_pok - 1) + ".png"))
+    
+    if window.enemy.hp == 0:
+        text = window.enemy.name + " is K.O."
+        display_in_label(window, text)
     QtTest.QTest.qWait(1000)
+    window.infos_combat.hide()
     
     
     
@@ -180,14 +184,14 @@ def animation_notre_pokemon(window, damage, critical, efficacity, attack):
         display_in_label(window, text)
         QtTest.QTest.qWait(1000)
     
-    text = {0:"It has no effect...",0.25:"It's not very effective...",0.5:"It's not very effective...",
+    text = {0:"It doesn't affect " + window.notre_pokemon.name + "...",0.25:"It's not very effective...",0.5:"It's not very effective...",
             1:False, 2:"It's super effective!", 4:"It's super effective!"}[efficacity]
     if text:
         display_in_label(window, text)
         QtTest.QTest.qWait(1000)
-    window.infos_combat.hide()
     
     for i in range(damage):
+        interval = 5000 / damage
         QtTest.QTest.qWait(200)
         window.notre_pokemon.hp -= 1
         if window.notre_pokemon.hp < 0:
@@ -199,7 +203,12 @@ def animation_notre_pokemon(window, damage, critical, efficacity, attack):
         window.impagepoke.setPixmap(QtGui.QPixmap("images/pokemon/" + category + "miroir/" + str(window.notre_pokemon.id_pok - 1) + ".png"))
     window.impagepoke.setGeometry(QtCore.QRect(160, 320, 331, 211))
     window.impagepoke.setPixmap(QtGui.QPixmap("images/pokemon/blanc/miroir/" + str(window.notre_pokemon.id_pok - 1) + ".png"))
+    
+    if window.enemy.hp == 0:
+        text = window.notre_pokemon.name + " is K.O."
+        display_in_label(window, text)
     QtTest.QTest.qWait(1000)
+    window.infos_combat.hide()
     
 def display_in_label(window,text):
     for i in range(len(text) + 1):
@@ -281,7 +290,6 @@ def check_capture(window):
     if window.enemy.hp == 0:
         window.phase = "capture"
         window.areyousure.setText("Do you want this pokemon\nto join your team ?")
-        window.widget.show()
         # window.team.add(window.enemy)
         # window.comboBox.addItem(QtGui.QIcon("images/pokemon/blanc/" + str(window.enemy.id_pok - 1) + ".png"), window.enemy.name + " lvl." + str(window.enemy.level))
         # if window.enemy_with_position is not None:
@@ -290,20 +298,33 @@ def check_capture(window):
         # window.enemy.heal()
         xp = 100 + 5 * window.enemy.level
         for index_team in window.fighters:
-            window.team.list[index_team].receve_xp(xp)
+            pokemon = window.team.list[index_team]
+            name = pokemon.name
+            pokemon.receve_xp(xp)
+            if pokemon.name != name:
+                window.infos_combat.show()
+                text = "What!? " + name + " is evolving!"
+                display_in_label(window, text)
+                QtTest.QTest.qWait(1000)
+                window.infos_combat.hide()
         
+        window.widget.show()
         return False
     return True
 
 def check_living(window):
     if window.team.all_ko():
         if window.lives == 3:
-            window.coeur3.setPixmap(QtGui.QPixmap("images/divers/coeur.png"))
+            window.coeur3.setPixmap(QtGui.QPixmap("images/divers/coeur_g.png"))
         elif window.lives == 2:
-            window.coeur2.setPixmap(QtGui.QPixmap("images/divers/coeur.png"))
+            window.coeur2.setPixmap(QtGui.QPixmap("images/divers/coeur_g.png"))
         elif window.lives == 1:
             window.close()
         
+        window.lives -= 1
+        
+        for index_team in window.team.bag:
+            window.team.list[index_team].heal()
         window.sacha.setGeometry(QtCore.QRect(window.width() / 2, window.height() / 2, 19 * window.scale, 25 * window.scale))
         window.fond.setGeometry(QtCore.QRect(-180,-860,1920 * window.scale,1280 * window.scale))
         window.load_map()
@@ -311,7 +332,9 @@ def check_living(window):
     
     if window.notre_pokemon.hp == 0:
         window.phase = "pokemon ko"
-        change_pokemon(window)
+        window.areyousure.setText("Do you want\nto escape ?")
+        window.widget.show()
+        # change_pokemon(window)
         for index_team in window.team.bag:
             if window.team.list[index_team].hp != 0:
                 window.team.set_main(index_team)
@@ -352,29 +375,45 @@ def change_pokemon(window):
     window.load_inventory()
     window.send_to_fight.show()
     window.see_the_attacks.show()
+    if window.phase == "change pokemon":
+        window.retour.show()
 
 def escape(window):
     if window.enemy_with_position is not None:
         window.enemy.heal()
         #window.enemy_with_position[1:] = [rd.randint(0,1042),rd.randint(0,686)]
-        dx = {0:0, 1: 0, 2:4, 3:-4}[window.sacha_dir]
-        dy = {0:4, 1:-4, 2:0, 3: 0}[window.sacha_dir]
-        window.sacha_dx = dx
-        window.sacha_dy = dy
+        window.dir = {1:2,2:1,3:4,4:3}[window.dir]
         
         window.load_map()
-        window.update_position()
+        window.update_escape()
     else:
         window.load_map()
 
 def run_escape(window):
     window.verticalLayoutWidget.hide()
     
-    if first_player(window):
+    sp1, sp2 = window.notre_pokemon.speed, window.enemy.speed
+    sp1 = int(sp1 * window.notre_pokemon.level / 50) + 5
+    sp2 = int(sp2 * window.enemy.level         / 50) + 5
+    f = (sp1 * 32 / (int(sp2 / 4) % 255)) + (30 * window.escape_attempts)
+    if rd.randint(0, 255) < f:
+        window.infos_combat.show()
+        text = "You fled like a coward..."
+        display_in_label(window, text)
+        QtTest.QTest.qWait(1000)
+        window.infos_combat.hide()
         escape(window)
     else:
+        window.infos_combat.show()
+        text = "You even didn't manage to escape !"
+        display_in_label(window, text)
+        QtTest.QTest.qWait(1000)
+        window.infos_combat.hide()
+        
+        window.escape_attempts += 1
         hit_someone(window, 0)
-        escape(window)
+        if check_living(window):
+            window.verticalLayoutWidget.show()
         
 def yes_button(window):
     if window.phase == "capture":
@@ -386,12 +425,20 @@ def yes_button(window):
         window.enemy.heal()
         
         window.load_map()
+    elif window.phase == "pokemon ko":
+        escape(window)
     else:
+        window.widget.hide()
         run_escape(window)
 
 def no_button(window):
     if window.phase == "capture":
+        if window.enemy_with_position is not None:
+            window.wild.remove(window.enemy_with_position)
+            window.enemy_with_position = None
         window.load_map()
+    elif window.phase == "pokemon ko":
+        change_pokemon(window)
     else:
         window.widget.hide()
 

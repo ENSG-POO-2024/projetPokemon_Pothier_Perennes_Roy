@@ -76,6 +76,7 @@ def check_fight(window,pokemon):
         window.enemy = pokemon[0]
         window.enemy_with_position = pokemon
         window.notre_pokemon = window.team.list[window.team.main]
+        window.escape_attempts = 0
         set_up_fight(window)
 
 def check_zone(window):
@@ -92,6 +93,7 @@ def check_zone(window):
                 enemy.receve_xp(Individu.xp_total(level),True)
                 window.enemy = enemy
                 window.notre_pokemon = window.team.list[window.team.main]
+                window.escape_attempts = 0
                 set_up_fight(window)
             else:
                 zone.p += (1 - zone.p) / 20
@@ -146,9 +148,8 @@ def check_colision(window):
 
 
 def update_position(window):
-    check_position(window)
     check_colision(window)
-    check_zone(window)
+    check_position(window)
     
     
     
@@ -175,14 +176,16 @@ def update_position(window):
     window.sacha.setPixmap(QtGui.QPixmap("images/animation/" + window.name + ".png"))
     window.fond.move(window.fond.x() + dx, window.fond.y() + dy)
     window.maison.move(window.fond.x() + house_x, window.fond.y() + house_y)
-    window.speed = 12
     
     
     check_house(window)
+    if window.speed:
+        check_zone(window)
     p1, p2 = check_pokemon(window)
     if p1:
         check_fight(window, p2)
     
+    window.speed = 12
     window.time = time()
 
 

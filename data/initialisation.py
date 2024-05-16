@@ -27,8 +27,8 @@ starting_pack.append(Individu(liste_pokemon[3], [atk_lib[0], atk_lib[23]],5))
 starting_pack[-1].range = 1
 starting_pack.append(Individu(liste_pokemon[6], [atk_lib[0], atk_lib[15]],5))
 starting_pack[-1].range = 2
-# starting_pack.append(Individu(liste_pokemon[149], [atk_lib[4], atk_lib[-2], atk_lib[32]],100))
-# starting_pack[-1].range = 3
+starting_pack.append(Individu(liste_pokemon[149], [atk_lib[4], atk_lib[-2], atk_lib[32]],100))
+starting_pack[-1].range = 3
 
 
 
@@ -37,21 +37,21 @@ wild.append([Individu(liste_pokemon[0], [atk_lib[0], atk_lib[1]])])
 wild.append([Individu(liste_pokemon[3], [atk_lib[0], atk_lib[2]])])
 wild.append([Individu(liste_pokemon[6], [atk_lib[0], atk_lib[3]])])
 wild.append([Individu(liste_pokemon[53], [atk_lib[0]]),1656,864])
-wild[-1][0].receve_xp(Individu.xp_total(30), True)
+wild[-1][0].receve_xp(Individu.xp_total(25), True)
 wild.append([Individu(liste_pokemon[53], [atk_lib[0]]),1656,912])
-wild[-1][0].receve_xp(Individu.xp_total(30), True)
+wild[-1][0].receve_xp(Individu.xp_total(25), True)
 wild.append([Individu(liste_pokemon[53], [atk_lib[0]]),1656,960])
-wild[-1][0].receve_xp(Individu.xp_total(30), True)
+wild[-1][0].receve_xp(Individu.xp_total(25), True)
 wild.append([Individu(liste_pokemon[142], [atk_lib[0]]),1872,1344])
-wild[-1][0].receve_xp(Individu.xp_total(50), True)
+wild[-1][0].receve_xp(Individu.xp_total(40), True)
 wild.append([Individu(liste_pokemon[143], [atk_lib[0]]),2592,1416])
-wild[-1][0].receve_xp(Individu.xp_total(100), True)
+wild[-1][0].receve_xp(Individu.xp_total(80), True)
 wild.append([Individu(liste_pokemon[144], [atk_lib[0]]),1800,456])
-wild[-1][0].receve_xp(Individu.xp_total(100), True)
+wild[-1][0].receve_xp(Individu.xp_total(80), True)
 wild.append([Individu(liste_pokemon[145], [atk_lib[0]]),1452,528])
-wild[-1][0].receve_xp(Individu.xp_total(100), True)
+wild[-1][0].receve_xp(Individu.xp_total(80), True)
 wild.append([Individu(liste_pokemon[149], [atk_lib[0]]),2112,384])
-wild[-1][0].receve_xp(Individu.xp_total(100), True)
+wild[-1][0].receve_xp(Individu.xp_total(80), True)
 wild.append([Individu(liste_pokemon[150], [atk_lib[0]]),1980,1850])
 wild[-1][0].receve_xp(Individu.xp_total(100), True)
 

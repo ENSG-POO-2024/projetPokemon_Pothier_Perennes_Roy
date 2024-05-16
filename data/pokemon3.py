@@ -240,7 +240,7 @@ class Team():
         pokemon.range = len(self.list)
         self.list.append(pokemon)
         if self.len < 6:
-            self.put_in(self.len)
+            self.put_in(pokemon.range)
     
     def put_out(self,index_team):
         self.bag.remove(index_team)

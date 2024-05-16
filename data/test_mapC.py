@@ -276,6 +276,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.select_main_button.show()
         self.see_the_attacks.show()
         self.select_remove_button.show()
+        self.retour.show()
         
     def load_inventory(self):
         
@@ -289,7 +290,6 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.inventairemarron.show()
         self.fontgris.show()
         set_up_inventory(self)
-        self.retour.show()
         
         self.send_to_fight.hide()
         self.select_main_button.hide()
@@ -300,6 +300,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.load_inventory()
         self.select_main_button.show()
         self.see_the_attacks.show()
+        self.retour.show()
 
     def set_main_1(self):
         self.team.main = self.team.bag[0]
@@ -327,21 +328,27 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         attack4_selected(self)
     
     def change_pokemon_button(self):
-        change_pokemon(self)
         window.phase = "change pokemon"
+        change_pokemon(self)
     
     def run_send_to_fight_button(self):
-        if self.phase == "change pokemon":
-            run_pokemon_changement(self)
-        elif self.phase == "pokemon ko":
-            upload_pokemon(self, self.case - 1)
-            self.load_fight()
+        if self.team.list[self.team.bag[self.case - 1]].hp == 0:
+            self.verticalLayoutWidget_inv.hide()
+        else:
+            if self.phase == "change pokemon":
+                run_pokemon_changement(self)
+            elif self.phase == "pokemon ko":
+                upload_pokemon(self, self.case - 1)
+                self.load_fight()
     
     def escape_button(self):
         window.areyousure.setText("Are you sure\nyou want to escape ?")
         window.widget.show()
     
     def run_select_main_button(self):
+        if self.team.list[self.team.bag[self.case - 1]].hp <= 0:
+            self.verticalLayoutWidget_inv.hide()
+            return
         self.team.set_main(self.team.bag[self.case - 1])
         self.verticalLayoutWidget_inv.hide()
         self.couronne1.hide()
@@ -521,6 +528,9 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         if index_team != -1 and (not index_team in self.team.bag):
             self.team.put_in(index_team)
         self.load_inventory_combobox()
+    
+    def update_escape(self):
+        moving.update_position(self)
     
     # def keyReleaseEvent(self, event):
         
