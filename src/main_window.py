@@ -6,8 +6,6 @@ Created on Fri May  3 17:00:24 2024
 """
 
 #imports généraux
-import numpy  as np
-import random as rd
 from time import time
 import sys
 #imports de nos fichiers
@@ -18,7 +16,7 @@ from moving import update_position, check_house
 from inventory import set_up_inventory
 import fight
 #imports de PyQt5
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtTest, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.Qt import Qt
 
@@ -28,9 +26,11 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         super(GameWindow, self).__init__(parent)
         self.setupUi(self)
         self.play.clicked.connect(self.load_map)
+        self.new_game.clicked.connect(self.run_new_game_button)
         self.retour.clicked.connect(self.return_button)
         self.inventory.clicked.connect(self.inventory_clicked)
         self.inventory2.clicked.connect(self.inventory_clicked)
+        self.save_button.clicked.connect(self.save)
         self.bp1.clicked.connect(self.show_vertical_layout)
         self.bp2.clicked.connect(self.show_vertical_layout)
         self.bp3.clicked.connect(self.show_vertical_layout)
@@ -62,6 +62,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.speed = 10
         self.time = time()
         self.name = "down0"
+        self.dir = 0
         self.moves = 0
         
         
@@ -69,6 +70,9 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.team = Team(starting_pack)
         self.atk_lib = atk_lib
         self.zones = zones
+        
+        self.check_save()
+        
         
         self.run_select_main_button()
         self.load_screen_title()
@@ -98,6 +102,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.coeur3.hide()
         self.gameover.hide()
         self.inventory.hide()
+        self.save_button.hide()
         self.fond.hide()
         self.sacha.hide()
         self.maison.hide()
@@ -113,6 +118,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.pokemon_sauvage.hide()
         self.label.hide()
         self.inventory2.hide()
+        self.new_game.hide()
         self.play.hide()
         self.level_notre_poke.hide()
         self.level_poke_sauvage.hide()
@@ -153,7 +159,9 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.pokemon_sauvage.show()
         self.label.show()
         self.inventory2.show()
-        self.play.show()
+        self.new_game.show()
+        if self.save_found:
+            self.play.show()
     
         self.sacha.setFocus()
     
@@ -174,6 +182,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.coeur2.show()
         self.coeur3.show()
         self.inventory.show()
+        self.save_button.show()
         self.sacha.show()
         
         if check_house(self):
@@ -648,12 +657,57 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         if self.phase == "map" and self.dir:
             update_position(self)
 
+    #Fonction liées à la sauvegarde    
+
+    def save(self):
+        save = r'save.py'
+        with open(save, 'w') as f:
+            text = 'from pokemon import Attack,Individu,Team\n'
+            text += 'from pokemon import liste_pokemon\n\n'
+            text += str(self.team) + '\n'
+            text += 'saved_wild = []\n'
+            for pokemon in self.wild:
+                text += str(pokemon[0]) + '\n'
+                text += 'saved_wild.append([pokemon] + ' + str(pokemon[1:]) + ')\n'
+            text += 'saved_sacha_x = ' + str(self.sacha.x()) + '\n'
+            text += 'saved_sacha_y = ' + str(self.sacha.y()) + '\n'
+            text += 'saved_fond_x = ' + str(self.fond.x()) + '\n'
+            text += 'saved_fond_y = ' + str(self.fond.y()) + '\n'
+            
+            f.write(text)
         
+        text = 'Game saved'
+        self.infos_combat.setText("")
+        self.infos_combat.show()
+        QtTest.QTest.qWait(150)
+        fight.display_in_label(self, text)
+        QtTest.QTest.qWait(500)
+        self.infos_combat.hide()
+        self.sacha.setFocus()
         
+    
+    def check_save(self):
+        try:
+            import save
+            self.wild = save.saved_wild
+            self.team = save.saved_team
+            self.sacha.move(save.saved_sacha_x, save.saved_sacha_y)
+            self.fond.move(save.saved_fond_x, save.saved_fond_y)
+            update_position(self)
+            self.save_found = True
+        except:
+            self.save_found = False
+    
+    def run_new_game_button(self):
+        self.wild = wild
+        self.team = Team(starting_pack)
+        self.sacha.move(540, 364)
+        self.fond.move(-180,-860)
+        self.load_map()
         
         
 if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     window = GameWindow(wild, starting_pack, atk_lib, zones)
     window.show()
     window.sacha.setFocus()

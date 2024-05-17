@@ -57,6 +57,18 @@ class Attack():
         self.power = power
         self.type = typ
         self.special = special
+    
+    def __str__(self):
+        s_name    = self.name
+        s_power   = str(self.power)
+        s_type    = str(self.type)
+        s_special = str(self.special)
+        text = 'Attack("'
+        text += s_name    + '",'
+        text += s_power   + ','
+        text += s_type    + ','
+        text += s_special + ')'
+        return text
 
 class Individu(Pokemon):
     n = 0
@@ -71,6 +83,27 @@ class Individu(Pokemon):
         self.range = None
         self.id = Individu.n
         Individu.n += 1
+    
+    def __str__(self):
+        s_id_pok = str(self.id_pok - 1)
+        s_level = str(self.level)
+        s_xp = str(self.xp)
+        s_range = str(self.range)
+        s_atk = '['
+        for atk in self.list_atk:
+            s_atk += str(atk) + ','
+        #On enlève la dernière virgule
+        s_atk = s_atk[:-1]
+        s_atk += ']'
+        
+        text = 'pokemon = Individu(liste_pokemon[' + s_id_pok + '],'
+        text += s_atk + ','
+        text += s_level + ')\n'
+        text += 'pokemon.xp = ' + s_xp + '\n'
+        text += 'pokemon.range = ' + s_range
+        
+        return text
+        
     
     
     def heal(self):
@@ -367,6 +400,20 @@ class Team():
         self.main = 0
         self.bag = [i for i in range(len(team))]
         self.len = len(self.bag)
+    
+    def __str__(self):
+        s_main = str(self.main)
+        s_bag  = str(self.bag)
+        text = 'team = []\n'
+        for pokemon in self.list:
+            text += str(pokemon) + '\n'
+            text += 'team.append(pokemon)\n'
+        text += 'saved_team = Team(team)\n'
+        text += 'saved_team.main = ' + s_main + '\n'
+        text += 'saved_team.bag = ' + s_bag   + '\n'
+        text += 'saved_team.len = len(saved_team.bag)'
+        
+        return text
     
     def set_main(self,main):
         """
