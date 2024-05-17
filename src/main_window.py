@@ -357,7 +357,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
             if self.phase == "change pokemon":
                 fight.run_pokemon_changement(self)
             elif self.phase == "pokemon ko":
-                fight.upload_pokemon(self, self.case - 1)
+                fight.upload_pokemon(self, self.team.bag[self.case - 1])
                 self.load_fight()
     
     
