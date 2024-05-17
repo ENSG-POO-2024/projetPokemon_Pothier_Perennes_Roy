@@ -11,8 +11,6 @@ import random as rd
 from pokemon3 import Individu, Attack, Zone, Sous_Zone
 from pokemon3 import atk_lib
 
-map_width  = 1071 - 25
-map_height = 721  - 26
 
 
 liste_pokemon = pd.read_csv('pokemon_first_gen.csv',sep = ',').to_numpy()
@@ -21,21 +19,18 @@ liste_pokemon = pd.read_csv('pokemon_first_gen.csv',sep = ',').to_numpy()
 
 
 starting_pack = []
-starting_pack.append(Individu(liste_pokemon[0], [atk_lib[0], atk_lib[43]],5))
+starting_pack.append(Individu(liste_pokemon[0], [atk_lib[0], atk_lib[43]],15))
 starting_pack[-1].range = 0
-starting_pack.append(Individu(liste_pokemon[3], [atk_lib[0], atk_lib[23]],5))
+starting_pack.append(Individu(liste_pokemon[4], [atk_lib[0], atk_lib[23]],35))
 starting_pack[-1].range = 1
 starting_pack.append(Individu(liste_pokemon[6], [atk_lib[0], atk_lib[15]],5))
 starting_pack[-1].range = 2
-starting_pack.append(Individu(liste_pokemon[149], [atk_lib[4], atk_lib[-2], atk_lib[32]],100))
-starting_pack[-1].range = 3
+# starting_pack.append(Individu(liste_pokemon[149], [atk_lib[4], atk_lib[-2], atk_lib[32]],100))
+# starting_pack[-1].range = 3
 
 
 
 wild = []
-wild.append([Individu(liste_pokemon[0], [atk_lib[0], atk_lib[1]])])
-wild.append([Individu(liste_pokemon[3], [atk_lib[0], atk_lib[2]])])
-wild.append([Individu(liste_pokemon[6], [atk_lib[0], atk_lib[3]])])
 wild.append([Individu(liste_pokemon[53], [atk_lib[0]]),1656,864])
 wild[-1][0].receve_xp(Individu.xp_total(25), True)
 wild.append([Individu(liste_pokemon[53], [atk_lib[0]]),1656,912])
@@ -55,17 +50,6 @@ wild[-1][0].receve_xp(Individu.xp_total(80), True)
 wild.append([Individu(liste_pokemon[150], [atk_lib[0]]),1980,1850])
 wild[-1][0].receve_xp(Individu.xp_total(100), True)
 
-for i in range(3):
-    x = rd.randint(0, map_width )
-    y = rd.randint(0, map_height)
-    wild[i].append(x)
-    wild[i].append(y)
-
-# wild[2][1] = 390
-# wild[2][2] = 580
-print(wild[0][1],wild[0][2])
-print(wild[1][1],wild[1][2])
-print(wild[2][1],wild[2][2])
 
 
 zones = []

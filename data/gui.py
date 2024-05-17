@@ -62,6 +62,12 @@ class Ui_MainWindow(object):
         self.coeur1.setPixmap(QtGui.QPixmap("images/divers/coeur.png"))
         self.coeur1.setScaledContents(True)
         self.coeur1.setObjectName("coeur1")
+        self.gameover = QtWidgets.QLabel(self.centralwidget)
+        self.gameover.setGeometry(QtCore.QRect(0, 0, self.width(), self.height()))
+        self.gameover.setText("")
+        self.gameover.setPixmap(QtGui.QPixmap("images/divers/gameover.png"))
+        self.gameover.setScaledContents(True)
+        self.gameover.setObjectName("gameover")
         # self.joueur = QtWidgets.QLineEdit(self.centralwidget)
         # self.joueur.setGeometry(QtCore.QRect(10, 10, 113, 22))
         # self.joueur.setObjectName("joueur")
@@ -699,6 +705,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Pokemon"))
+        self.setWindowIcon(QtGui.QIcon("images/divers/pokeball"))
         self.inventory.setText(_translate("MainWindow", "Inventory"))
       #  self.joueur.setText(_translate("MainWindow", "Nom Joueur"))
         self.play.setText(_translate("MainWindow", "Play"))

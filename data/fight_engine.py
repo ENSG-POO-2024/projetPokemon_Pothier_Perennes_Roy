@@ -41,28 +41,45 @@ def upload_pokemon(window,index_team):
     window.impagepoke.setPixmap(QtGui.QPixmap("images/pokemon/blanc/miroir/" + str(pokemon.id_pok - 1) + ".png"))
     window.impagepoke.setScaledContents(True)
     window.level_notre_poke.setText("lvl. " + str(pokemon.level))
-    window.run_see_the_attacks_button()
-    
-    # window.attaque1.hide()
-    # window.attaque2.hide()
-    # window.attaque3.hide()
-    # window.attaque4.hide()
-    
-    # attacks = pokemon.list_atk
-    # n = len(attacks)
-    # if n > 0:
-    #     window.attaque1.setText(attacks[0].name)
-    #     window.attaque1.show()
-    #     if n > 1:
-    #         window.attaque2.setText(attacks[1].name)
-    #         window.attaque2.show()
-    #         if n > 2:
-    #             window.attaque3.setText(attacks[2].name)
-    #             window.attaque3.show()
-    #             if n > 3:
-    #                 window.attaque4.setText(attacks[3].name)
-    #                 window.attaque4.show()
+    run_see_the_attacks(window)
 
+def run_see_the_attacks(window):
+    window.attaque1.hide()
+    window.attaque2.hide()
+    window.attaque3.hide()
+    window.attaque4.hide()
+    
+    colors = {0:"#60A2B9",1:"#FF8100",2:"#4F60E2",3:"#2481EF",4:"#FAC100",5:"#E72324",6:"#EF70EF", 
+                   7:"#3DD9FF",8:"#92A212",9:"#A0A2A0",10:"#3DA224",11:"#923FCC",12:"#EF3F7A",
+                   13:"#B0AA82",14:"#92501B",15:"#703F70",16:"#4F3F3D",17:"#82BAEF"}
+    
+    if window.phase != "fight":
+        pokemon = window.team.list[window.team.bag[window.case - 1]]
+    else:
+        pokemon = window.notre_pokemon
+    
+    attacks = pokemon.list_atk
+    n = len(attacks)
+    if n > 0:
+        window.attaque1.setText(attacks[0].name)
+        window.attaque1.setStyleSheet("QPushButton {background-color: " + colors[attacks[0].type] + "}")
+        window.attaque1.show()
+        if n > 1:
+            window.attaque2.setText(attacks[1].name)
+            window.attaque2.setStyleSheet("QPushButton {background-color: " + colors[attacks[1].type] + "}")
+            window.attaque2.show()
+            if n > 2:
+                window.attaque3.setText(attacks[2].name)
+                window.attaque3.setStyleSheet("QPushButton {background-color: " + colors[attacks[2].type] + "}")
+                window.attaque3.show()
+                if n > 3:
+                    window.attaque4.setText(attacks[3].name)
+                    window.attaque4.setStyleSheet("QPushButton {background-color: " + colors[attacks[3].type] + "}")
+                    window.attaque4.show()
+    
+    if window.phase != "fight":
+        window.gridLayoutWidget.show()
+        window.verticalLayoutWidget_inv.hide()
 
 def color_health(pokemon):
     colors = {0:"red", 1:"yellow", 2:"green"}
@@ -76,27 +93,13 @@ def color_health(pokemon):
     
     return colors[c]
     
-def update_fight(window):
-    notre_poke = window.notre_pokemon
-    color = color_health(notre_poke)
-    window.progressBar_notre.setProperty("value", notre_poke.hp)
-    window.progressBar_notre.setStyleSheet("QProgressBar {\n""    border: 2px solid grey;\n""    border-radius: 5px;\n""    background-color: lightgrey;\n""}\n""\n""QProgressBar::chunk {\n""    background-color: " + color + ";\n""    width: 20px;\n""}")
-    color = color_health(window.enemy)
-    window.progressBarpokesauvage.setValue(window.enemy.hp)
-    window.progressBarpokesauvage.setStyleSheet("QProgressBar {\n""    border: 2px solid grey;\n""    border-radius: 5px;\n""    background-color: lightgrey;\n""}\n""\n""QProgressBar::chunk {\n""    background-color: " + color + ";\n""    width: 20px;\n""}")
-
-def culotte(interval):
-    t = time()
-    while time() - t < interval:
-        None
-
 def animation_enemy(window, damage, critical, efficacity, attack):
     window.infos_combat.setText("")
     window.infos_combat.show()
     text = window.notre_pokemon.name
     text += " used "
     text += attack.name
-    text += " !"
+    text += "!"
     display_in_label(window, text)
     QtTest.QTest.qWait(1000)
     
@@ -132,44 +135,6 @@ def animation_enemy(window, damage, critical, efficacity, attack):
     QtTest.QTest.qWait(1000)
     window.infos_combat.hide()
     
-    
-    
-    pass
-    
-#     window.imagepokesauvage.setGeometry(QtCore.QRect(643, 323, 331, 211))
-#     window.image1 = QPixmap("images/pokemon/blanc/" + str(window.enemy.id_pok - 1) + ".png")
-#     window.imagepokesauvage.setGeometry(QtCore.QRect(643, 323, 331, 211))
-#     window.image2 = QPixmap("images/pokemon/rouge/" + str(window.enemy.id_pok - 1) + ".png")
-
-#     window.timer = QTimer(window)
-#     window.timer.timeout.connect(window.toggle_image)
-#     window.interval = 200  # Intervalle de temps entre chaque changement d'image en millisecondes
-#     window.duration = 2000  # Durée totale du clignotement en millisecondes
-#     window.total_time_elapsed = 0
-#     window.is_image1 = True 
-    
-# def start_blinking(self):
-#     self.timer.start(self.interval)
-
-# def toggle_image(self):
-#         # Alterner entre les deux images
-#     if self.is_image1:
-#         self.label.setPixmap(self.image2)
-            
-#     else:
-#         self.label.setPixmap(self.image1)
-#     self.is_image1 = not self.is_image1
-
-#         # Vérifiez si la durée totale du clignotement est écoulée
-#     self.total_time_elapsed += self.interval
-#     if self.total_time_elapsed >= self.duration:
-#         self.timer.stop()
-    
-#     # window.imagepokesauvage.setGeometry(QtCore.QRect(643, 323, 331, 211))
-#     # window.imagepokesauvage.setPixmap(QtGui.QPixmap("images/pokemon/rouge/" + str(window.enemy.id_pok - 1) + ".png"))
-#     # sleep(1)
-#     # window.imagepokesauvage.setGeometry(QtCore.QRect(640, 320, 331, 211))
-#     # window.imagepokesauvage.setPixmap(QtGui.QPixmap("images/pokemon/blanc/" + str(window.enemy.id_pok - 1) + ".png"))
 
 def animation_notre_pokemon(window, damage, critical, efficacity, attack):
     window.infos_combat.setText("")
@@ -177,7 +142,7 @@ def animation_notre_pokemon(window, damage, critical, efficacity, attack):
     text = window.enemy.name
     text += " used "
     text += attack.name
-    text += " !"
+    text += "!"
     display_in_label(window, text)
     QtTest.QTest.qWait(1000)
     
@@ -220,11 +185,14 @@ def display_in_label(window,text):
         QtTest.QTest.qWait(20)
 
 def choose_attack(window):
-    window.attaque1.clicked.connect(window.attack_1_button)
-    window.attaque2.clicked.connect(window.attack_2_button)
-    window.attaque3.clicked.connect(window.attack_3_button)
-    window.attaque4.clicked.connect(window.attack_4_button)
+    if not window.attack_connected:
+        window.attaque1.clicked.connect(window.attack_1_button)
+        window.attaque2.clicked.connect(window.attack_2_button)
+        window.attaque3.clicked.connect(window.attack_3_button)
+        window.attaque4.clicked.connect(window.attack_4_button)
+    window.attack_connected = True
     window.gridLayoutWidget.show()
+    window.widget.hide()
 
 def attack1_selected(window):
     window.case = 1
@@ -241,6 +209,13 @@ def attack3_selected(window):
 def attack4_selected(window):
     window.case = 4
     run_attack(window, 3)
+
+def disconnect_attack_button(window):
+    window.attaque1.clicked.disconnect(window.attack_1_button)
+    window.attaque2.clicked.disconnect(window.attack_2_button)
+    window.attaque3.clicked.disconnect(window.attack_3_button)
+    window.attaque4.clicked.disconnect(window.attack_4_button)
+    window.attack_connected = False
 
 def first_player(window):
     sp1, sp2 = window.notre_pokemon.speed, window.enemy.speed
@@ -283,10 +258,7 @@ def run_attack(window,id_atk):
     if go_on:
         window.verticalLayoutWidget.show()
     
-    window.attaque1.clicked.disconnect(window.attack_1_button)
-    window.attaque2.clicked.disconnect(window.attack_2_button)
-    window.attaque3.clicked.disconnect(window.attack_3_button)
-    window.attaque4.clicked.disconnect(window.attack_4_button)
+    disconnect_attack_button(window)
     
 
 
@@ -294,12 +266,6 @@ def check_capture(window):
     if window.enemy.hp == 0:
         window.phase = "capture"
         window.areyousure.setText("Do you want this pokemon\nto join your team ?")
-        # window.team.add(window.enemy)
-        # window.comboBox.addItem(QtGui.QIcon("images/pokemon/blanc/" + str(window.enemy.id_pok - 1) + ".png"), window.enemy.name + " lvl." + str(window.enemy.level))
-        # if window.enemy_with_position is not None:
-        #     window.wild.remove(window.enemy_with_position)
-        #     window.enemy_with_position = None
-        # window.enemy.heal()
         xp = 100 + 5 * window.enemy.level
         for index_team in window.fighters:
             pokemon = window.team.list[index_team]
@@ -328,6 +294,9 @@ def check_living(window):
         elif window.lives == 2:
             window.coeur2.setPixmap(QtGui.QPixmap("images/divers/coeur_g.png"))
         elif window.lives == 1:
+            window.gameover.show()
+            window.gameover.raise_()
+            QtTest.QTest.qWait(2000)
             window.close()
         
         window.lives -= 1
@@ -343,7 +312,6 @@ def check_living(window):
         window.phase = "pokemon ko"
         window.areyousure.setText("Do you want\nto escape ?")
         window.widget.show()
-        # change_pokemon(window)
         for index_team in window.team.bag:
             if window.team.list[index_team].hp != 0:
                 window.team.set_main(index_team)
@@ -351,18 +319,6 @@ def check_living(window):
         return False
     return True
 
-# def fight(window,enemy):
-#     set_up_fight(window, enemy)
-#     end = False
-#     i = 0
-#     while not end:
-#         sleep(0.2)
-#         enemy.hp -=1
-#         update_fight(window,enemy)
-        
-#         if enemy.hp == 0:
-#             end = True
-#     return True
 
 def run_pokemon_changement(window):
     window.load_fight()
@@ -386,11 +342,12 @@ def change_pokemon(window):
     window.see_the_attacks.show()
     if window.phase == "change pokemon":
         window.retour.show()
+    if window.attack_connected:
+        disconnect_attack_button(window)
 
 def escape(window):
     if window.enemy_with_position is not None:
         window.enemy.heal()
-        #window.enemy_with_position[1:] = [rd.randint(0,1042),rd.randint(0,686)]
         window.dir = {1:2,2:1,3:4,4:3}[window.dir]
         
         window.load_map()
@@ -405,6 +362,8 @@ def run_escape(window):
     sp1 = int(sp1 * window.notre_pokemon.level / 50) + 5
     sp2 = int(sp2 * window.enemy.level         / 50) + 5
     f = (sp1 * 32 / (int(sp2 / 4) % 255)) + (30 * window.escape_attempts)
+    if window.notre_pokemon.type1 == 15 or window.notre_pokemon.type2 == 15:
+        f = 300
     if rd.randint(0, 255) < f:
         window.infos_combat.show()
         text = "You fled like a coward..."
@@ -414,7 +373,7 @@ def run_escape(window):
         escape(window)
     else:
         window.infos_combat.show()
-        text = "You even didn't manage to escape !"
+        text = "You even didn't manage to escape!"
         display_in_label(window, text)
         QtTest.QTest.qWait(1000)
         window.infos_combat.hide()
@@ -425,6 +384,8 @@ def run_escape(window):
             window.verticalLayoutWidget.show()
         
 def yes_button(window):
+    if window.attack_connected:
+        disconnect_attack_button(window)
     if window.phase == "capture":
         window.team.add(window.enemy)
         window.comboBox.addItem(QtGui.QIcon("images/pokemon/blanc/" + str(window.enemy.id_pok - 1) + ".png"), window.enemy.name + " lvl." + str(window.enemy.level))

@@ -61,7 +61,6 @@ def check_pokemon(window):
             window.sacha.y() - window.fond.y() < pokemon[2] + 48 - 1 + 26 and
             window.sacha.y() + window.sacha.height() - 1 - window.fond.y() + 26 > pokemon[2]):
             window.pokemon_sauvage.setGeometry(QtCore.QRect(pokemon[1] + window.fond.x() , pokemon[2] + window.fond.y(), 48, 48))
-            #window.pokemon_sauvage.setPixmap(QtGui.QPixmap("images/animation/cara"))
             window.pokemon_sauvage.setPixmap(QtGui.QPixmap("images/pokemon/blanc/" + str(pokemon[0].id_pok - 1) + ".png"))
             window.pokemon_sauvage.show()
             return True, pokemon
@@ -104,7 +103,6 @@ def check_house(window):
         window.sacha.x() - window.fond.x() + window.sacha.width() > house_x   and
         window.sacha.y() - window.fond.y() < house_y + window.maison.height() and
         window.sacha.y() - window.fond.y() + window.sacha.height() > + house_y):
-        # window.maison.move(window.fond.x() + house_x, window.fond.y() + house_y)
         window.maison.show()
         return True
     else:
@@ -172,7 +170,6 @@ def update_position(window):
         window.moves = 0
         window.name = name + "0"
     
-    #window.name = "cara"
     window.sacha.setPixmap(QtGui.QPixmap("images/animation/" + window.name + ".png"))
     window.fond.move(window.fond.x() + dx, window.fond.y() + dy)
     window.maison.move(window.fond.x() + house_x, window.fond.y() + house_y)

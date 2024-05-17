@@ -89,6 +89,3 @@ def put_in_inventory(window,pokemon,inventory_index):
         window.image6.setScaledContents(True)
         window.nom6.setText(pokemon.name)
         window.pv6.setText(str(pokemon.hp) + "/" + str(pokemon.hp_max))
-
-def inventory_clicked(window):
-    pass
