@@ -652,6 +652,11 @@ class GameWindow (QMainWindow, Ui_MainWindow):
                 self.inventory_clicked()
             self.dir = 0
             self.moves = 0
+        elif event.key() == Qt.Key_E:
+            if self.phase == "map":
+                self.save()
+            self.dir = 0
+            self.moves = 0
         else:
             return
         if self.phase == "map" and self.dir:
