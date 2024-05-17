@@ -78,7 +78,7 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         
         self.load_screen_title()
         
-        for individu in starting_pack:
+        for individu in self.team.list:
            self.comboBox.addItem(QtGui.QIcon("../data/images/pokemon/blanc/" + str(individu.id_pok-1) + ".png"), individu.name + " lvl." + str(individu.level))
         
         self.lives = 3
