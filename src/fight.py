@@ -472,16 +472,18 @@ def check_capture(window):
         xp = 100 + 5 * window.enemy.level
         for index_team in window.fighters:
             pokemon = window.team.list[index_team]
+            id_pok = pokemon.id_pok
             name = pokemon.name
             pokemon.receive_xp(xp)
-            if pokemon.name != name:
+            if pokemon.id_pok != id_pok:
                 window.infos_combat.show()
                 text = "What!? " + name + " is evolving!"
                 display_in_label(window, text)
                 QtTest.QTest.qWait(500)
+                id_pokemon = [id_pok,pokemon.id_pok]
                 for i in range(12):
                     window.impagepoke.setGeometry(QtCore.QRect(160 + (i%2) * 4, 320 + (i%2) * 4, 331, 211))
-                    window.impagepoke.setPixmap(QtGui.QPixmap("../data/images/pokemon/blanc/miroir/" + str(pokemon.id_pok - 2 + (i//6)) + ".png"))
+                    window.impagepoke.setPixmap(QtGui.QPixmap("../data/images/pokemon/blanc/miroir/" + str(id_pokemon[i//6] - 1) + ".png"))
                     QtTest.QTest.qWait(100)
                 window.impagepoke.setGeometry(QtCore.QRect(160, 320, 331, 211))
                 window.infos_combat.hide()
