@@ -646,7 +646,7 @@ def run_escape(window):
         escape(window)
     else:
         window.infos_combat.show()
-        text = "You even didn't manage to escape!"
+        text = "You didn't even manage to escape!"
         display_in_label(window, text)
         QtTest.QTest.qWait(1000)
         window.infos_combat.hide()
