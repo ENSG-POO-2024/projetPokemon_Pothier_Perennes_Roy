@@ -101,7 +101,7 @@ def animation_enemy(window, damage, critical, efficacity, attack):
     QtTest.QTest.qWait(1000)
     
     if critical:
-        text = "Critical !"
+        text = "Critical!"
         display_in_label(window, text)
         QtTest.QTest.qWait(1000)
     
@@ -117,7 +117,9 @@ def animation_enemy(window, damage, critical, efficacity, attack):
         if window.enemy.hp < 0:
             window.enemy.hp = 0
             break
-        update_fight(window)
+        color = color_health(window.enemy)
+        window.progressBarpokesauvage.setValue(window.enemy.hp)
+        window.progressBarpokesauvage.setStyleSheet("QProgressBar {\n""    border: 2px solid grey;\n""    border-radius: 5px;\n""    background-color: lightgrey;\n""}\n""\n""QProgressBar::chunk {\n""    background-color: " + color + ";\n""    width: 1px;\n""}")
         category = ["blanc/", "rouge/"][(i)%2]
         window.imagepokesauvage.setGeometry(QtCore.QRect(640 + (i%2) * 4, 320 + (i%2) * 4, 331, 211))
         window.imagepokesauvage.setPixmap(QtGui.QPixmap("images/pokemon/" + category + str(window.enemy.id_pok - 1) + ".png"))
@@ -180,7 +182,7 @@ def animation_notre_pokemon(window, damage, critical, efficacity, attack):
     QtTest.QTest.qWait(1000)
     
     if critical:
-        text = "Critical !"
+        text = "Critical!"
         display_in_label(window, text)
         QtTest.QTest.qWait(1000)
     
@@ -191,13 +193,15 @@ def animation_notre_pokemon(window, damage, critical, efficacity, attack):
         QtTest.QTest.qWait(1000)
     
     for i in range(damage):
-        interval = 5000 / damage
+        #interval = 5000 / damage
         QtTest.QTest.qWait(200)
         window.notre_pokemon.hp -= 1
         if window.notre_pokemon.hp < 0:
             window.notre_pokemon.hp = 0
             break
-        update_fight(window)
+        color = color_health(window.notre_pokemon)
+        window.progressBar_notre.setProperty("value", window.notre_pokemon.hp)
+        window.progressBar_notre.setStyleSheet("QProgressBar {\n""    border: 2px solid grey;\n""    border-radius: 5px;\n""    background-color: lightgrey;\n""}\n""\n""QProgressBar::chunk {\n""    background-color: " + color + ";\n""    width: 1px;\n""}")
         category = ["blanc/", "rouge/"][(i)%2]
         window.impagepoke.setGeometry(QtCore.QRect(160 + (i%2) * 4, 320 + (i%2) * 4, 331, 211))
         window.impagepoke.setPixmap(QtGui.QPixmap("images/pokemon/" + category + "miroir/" + str(window.notre_pokemon.id_pok - 1) + ".png"))
