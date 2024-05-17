@@ -305,7 +305,12 @@ def check_capture(window):
                 window.infos_combat.show()
                 text = "What!? " + name + " is evolving!"
                 display_in_label(window, text)
-                QtTest.QTest.qWait(1000)
+                QtTest.QTest.qWait(500)
+                for i in range(12):
+                    window.impagepoke.setGeometry(QtCore.QRect(160 + (i%2) * 4, 320 + (i%2) * 4, 331, 211))
+                    window.impagepoke.setPixmap(QtGui.QPixmap("images/pokemon/blanc/miroir/" + str(pokemon.id_pok - 2 + (i//6)) + ".png"))
+                    QtTest.QTest.qWait(100)
+                window.impagepoke.setGeometry(QtCore.QRect(160, 320, 331, 211))
                 window.infos_combat.hide()
         
         window.widget.show()
