@@ -1,6 +1,7 @@
 # Pokémon: projet informatique
 
 ## Manuel d'utilisation 
+Le fichier à lancer pour démarrer l'application se trouve dans le dossier src et s'appelle main_window.py
 
 ### But du jeu
 
