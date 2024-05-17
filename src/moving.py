@@ -228,7 +228,7 @@ def check_colision(window):
                 if x <= stop and (x + window.sacha.width() - 1) >= start:
                     window.speed = y_limit - y - 1
     
-    #right
+    #left
     elif window.dir == 3:
         x = window.sacha.x() - window.fond.x()
         y = window.sacha.y() - window.fond.y()
@@ -237,13 +237,13 @@ def check_colision(window):
                 if y <= stop and (y + window.sacha.height() - 1) >= start:
                     window.speed = x - x_limit - 1
     
-    #left
+    #right
     elif window.dir == 4:
         x = window.sacha.x() + window.sacha.width() - 1 - window.fond.x()
         y = window.sacha.y() - window.fond.y()
-        for x_limit in range(x + window.speed, x, -1):
+        for x_limit in range(x + window.speed, x, - 1):
             for start,stop in right_limit[x_limit]:
-                if y <= stop and (y + window.sacha.width() - 1) >= start:
+                if y <= stop and (y + window.sacha.height() - 1) >= start:
                     window.speed = x_limit - x - 1
     
 
