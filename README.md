@@ -30,7 +30,7 @@ Le joueur commence le jeu avec 3 pokémons : un Bulbizar (Bulbasaur, de type pla
 
 ### Comment accéder à son inventaire de pokémons ?
 
-Il faut cliquer sur le bouton "Inventaire" en haut à gauche de l'écran, ou presser la touche "i" sur son clavier, ou alors aller jusqu'à la maison de Sacha avec son personnage et presser la touche "Entrée". Cette dernière option permet de voir tous les pokémons possédés en déroulant le menu en haut à droite.  
+Il faut cliquer sur le bouton "Inventory" en haut à gauche de l'écran, ou presser la touche "i" sur son clavier, ou alors aller jusqu'à la maison de Sacha avec son personnage et presser la touche "Entrée". Cette dernière option permet de voir tous les pokémons possédés en déroulant le menu en haut à droite.  
 
 ### Comment sauvegarder la partie ?
 
