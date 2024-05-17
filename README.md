@@ -68,18 +68,18 @@ Chaque pokémon a un niveau différent, selon son expérience. Les pokémons de 
 
 La programmation du jeu est organisé en 3 dossiers : 
 * data : ce dossier contient toutes les images (sous-dossier "images"), les coordonnées de toutes les collisions sur la carte selon la direction du joueur, et les fichiers csv fournis.
-  Les images sont elles-mêmes divisées en sous-dossier (rouge, blanc, et inversées pour chaque)
+  Les images sont elles-mêmes divisées en sous-dossier (rouge, blanc, et inversées pour chaque).
 * documents : ce dossier contient les documents fournis. Il n'a pas été modifié.
 * src : ce dossier contient tous les fichiers pythons nécessaires au jeu.
 
 Le dossier src contient les fichiers pythons suivants : 
-* pokemon.py : classes des Pokémon/Individu/Attacks/Teams et Zone/Sous-Zone utilisées ensuite par tous les autres fichiers
-* initialisation.py : détermine le starting pack avec lequel le joueur commence, les coordonnées des pokémons placés sur la carte, et les zones dans lesquelles les pokémons apparaissent aléatoirement
-* fight.py : gère les combats entre les pokémons
-* moving.py : gère les déplacements du joueurs sur la carte
-* gui.py : statique, gère toute l'interface graphique
-* inventory.py : gère les inventaires du joueur
-* main_window.py : importe tous les fichiers précédents, permet de lancer le jeu
+* pokemon.py : classes des Pokémon/Individu/Attacks/Teams et Zone/Sous-Zone utilisées ensuite par tous les autres fichiers,
+* initialisation.py : détermine le starting pack avec lequel le joueur commence, les coordonnées des pokémons placés sur la carte, et les zones dans lesquelles les pokémons apparaissent aléatoirement,
+* fight.py : gère les combats entre les pokémons,
+* moving.py : gère les déplacements du joueurs sur la carte,
+* gui.py : statique, gère toute l'interface graphique,
+* inventory.py : gère les inventaires du joueur,
+* main_window.py : importe tous les fichiers précédents, permet de lancer le jeu.
 
 
 
