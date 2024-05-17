@@ -8,7 +8,7 @@ Le jeu consiste à jouer un personnage (nommé Sacha) que le joueur déplacera s
 
 ### Comment se déroule une partie ?
 
-Pour commencer une partie, il faut cliquer sur le bouton "Jouer" dans l'écran d'accueil. 
+Pour commencer une partie, il faut cliquer sur le bouton "New Game" dans l'écran d'accueil. Si vous avez déjà une sauvegarde, vous pouvez cliquer sur "Continue" pour charger votre ancienne sauvegarde.
 Il n'est pas possible de gagner une partie, le but est juste de capturer le plus de pokémons.
 Il est en revanche possible de perdre, lorsque le joueur perd ses 3 coeurs (en haut à droite de l'écran), c'est "Game over", le jeu est perdu. Pour perdre un coeur, il faut que tous les pokémons de l'inventaire aient 0 PV (points de vie).
 
@@ -31,6 +31,10 @@ Le joueur commence le jeu avec 3 pokémons : un Bulbizar (Bulbasaur, de type pla
 ### Comment accéder à son inventaire de pokémons ?
 
 Il faut cliquer sur le bouton "Inventaire" en haut à gauche de l'écran, ou presser la touche "i" sur son clavier, ou alors aller jusqu'à la maison de Sacha avec son personnage et presser la touche "Entrée". Cette dernière option permet de voir tous les pokémons possédés en déroulant le menu en haut à droite.  
+
+### Comment sauvegarder la partie ?
+
+Il faut cliquer sur le bouton "Save" en haut à gauche de l'écran, ou presser la touche "e" sur son clavier. 
 
 ### Comment choisir les pokémons joués lors des combats ? 
 
@@ -62,7 +66,7 @@ Après un combat, les pokémons possédés par le joueur auront pris des dégât
 
 ### Niveau et évolution des pokémons
 
-Chaque pokémon a un niveau différent, selon son expérience. Les pokémons de départ sont de niveau 1. Les pokémons sauvages rencontrés peuvent être de niveaux variables. Lorsqu'un pokémon atteind un certain niveau, il évolue. Le niveau du pokémon influence les statistiques des pokémon (attaque, défense, attaque spéciale et défense spéciale), les PV maximum, et le calcul des dégâts infligés. Le niveau maximal est le niveau 100.
+Chaque pokémon a un niveau différent, selon son expérience. Les pokémons de départ sont de niveau 5. Les pokémons sauvages rencontrés peuvent être de niveaux variables. Lorsqu'un pokémon atteind un certain niveau, il évolue. Le niveau du pokémon influence les statistiques des pokémon (attaque, défense, attaque spéciale et défense spéciale), les PV maximum, et le calcul des dégâts infligés. Le niveau maximal est le niveau 100.
 
 ### Architecture du code
 
@@ -80,6 +84,7 @@ Le dossier src contient les fichiers pythons suivants :
 * gui.py : statique, gère toute l'interface graphique,
 * inventory.py : gère les inventaires du joueur,
 * main_window.py : importe tous les fichiers précédents, permet de lancer le jeu.
+* save.py : contient la sauvegarde du joueur. Ce fichier peut être inexistant si le joueur n'a pas de sauvegarde.
 
 
 
