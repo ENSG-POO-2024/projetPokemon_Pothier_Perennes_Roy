@@ -270,7 +270,7 @@ def animation_notre_pokemon(window, damage, critical, efficacity, attack):
     window.impagepoke.setGeometry(QtCore.QRect(160, 320, 331, 211))
     window.impagepoke.setPixmap(QtGui.QPixmap("../data/images/pokemon/blanc/miroir/" + str(window.notre_pokemon.id_pok - 1) + ".png"))
     
-    if window.enemy.hp == 0:
+    if window.notre_pokemon.hp == 0:
         text = window.notre_pokemon.name + " is K.O."
         display_in_label(window, text)
     QtTest.QTest.qWait(1000)
@@ -639,14 +639,14 @@ def run_escape(window):
         f = 300
     if rd.randint(0, 255) < f:
         window.infos_combat.show()
-        text = "You fled like a coward..."
+        text = "You've managed to get away!"
         display_in_label(window, text)
         QtTest.QTest.qWait(1000)
         window.infos_combat.hide()
         escape(window)
     else:
         window.infos_combat.show()
-        text = "You didn't even manage to escape!"
+        text = "You didn't manage to escape!"
         display_in_label(window, text)
         QtTest.QTest.qWait(1000)
         window.infos_combat.hide()

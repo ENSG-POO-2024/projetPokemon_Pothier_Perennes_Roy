@@ -70,11 +70,12 @@ class GameWindow (QMainWindow, Ui_MainWindow):
         self.team = Team(starting_pack)
         self.atk_lib = atk_lib
         self.zones = zones
+        self.run_select_main_button()
         
         self.check_save()
         
         
-        self.run_select_main_button()
+        
         self.load_screen_title()
         
         for individu in starting_pack:
