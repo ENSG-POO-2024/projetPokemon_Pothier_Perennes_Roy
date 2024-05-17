@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
         self.fond = QtWidgets.QLabel(self.centralwidget)
         self.fond.setGeometry(QtCore.QRect(-180,-860,1920 * self.scale,1280 * self.scale))
         self.fond.setText("")
-        self.fond.setPixmap(QtGui.QPixmap("../data/images/divers/big_map.png"))
+        self.fond.setPixmap(QtGui.QPixmap("../data/images/divers/map.png"))
         self.fond.setScaledContents(True)
         self.fond.setObjectName("fond")
 

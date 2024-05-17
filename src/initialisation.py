@@ -19,13 +19,14 @@ liste_pokemon = pd.read_csv('../data/pokemon_first_gen.csv',sep = ',').to_numpy(
 
 
 starting_pack = []
-starting_pack.append(Individu(liste_pokemon[0], [atk_lib[0], atk_lib[43]],15))
+starting_pack.append(Individu(liste_pokemon[0], [atk_lib[0], atk_lib[43]],5))
 starting_pack[-1].range = 0
-starting_pack.append(Individu(liste_pokemon[4], [atk_lib[0], atk_lib[23]],35))
+starting_pack.append(Individu(liste_pokemon[3], [atk_lib[0], atk_lib[23]],5))
 starting_pack[-1].range = 1
 starting_pack.append(Individu(liste_pokemon[6], [atk_lib[0], atk_lib[15]],5))
 starting_pack[-1].range = 2
-# starting_pack.append(Individu(liste_pokemon[149], [atk_lib[4], atk_lib[-2], atk_lib[32]],100))
+#Pour commencer avec Mewtwo
+# starting_pack.append(Individu(liste_pokemon[149], [atk_lib[8], atk_lib[52], atk_lib[32]],100))
 # starting_pack[-1].range = 3
 
 
